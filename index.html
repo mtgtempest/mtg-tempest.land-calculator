@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTG Tempest's Land Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#060509;
+    --bg-1:#0e0c15;
+    --bg-2:#151220;
+    --panel:rgba(16,14,24,0.78);
+    --border:rgba(255,255,255,0.09);
+    --text-0:#f4f2fa;
+    --text-1:#b7b2c8;
+    --text-2:#7c7791;
+    --pink:#c1618f;
+    --pink-soft:rgba(193,97,143,0.12);
+    --cyan:#4f9fa8;
+    --cyan-soft:rgba(79,159,168,0.12);
+    --radius:16px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    background-color:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(193,97,143,0.10), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(79,159,168,0.09), transparent 45%);
+    background-attachment:fixed;
+    color:var(--text-0);
+    font-family:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-weight:400;
+    min-height:100vh;
+  }
+
+  .top-line{
+    height:2px;
+    width:100%;
+    background:var(--pink);
+    opacity:0.6;
+  }
+
+  .app{
+    max-width:820px;
+    margin:0 auto;
+    padding:52px 24px 70px;
+  }
+
+  .app-header{
+    text-align:left;
+    margin-bottom:40px;
+  }
+
+  .app-header h1{
+    font-family:"Montserrat",sans-serif;
+    font-weight:700;
+    font-size:1.85rem;
+    letter-spacing:-0.01em;
+    margin:0 0 10px;
+    color:var(--text-0);
+  }
+
+  .app-header .subtitle{
+    color:var(--text-1);
+    font-size:0.92rem;
+    font-weight:400;
+    margin:0;
+  }
+
+  .app-header .subtitle a{
+    color:var(--text-0);
+    text-decoration:none;
+    border-bottom:1px solid var(--pink);
+    transition:color 0.15s, border-color 0.15s;
+  }
+  .app-header .subtitle a:hover{
+    color:var(--pink);
+  }
+
+  .card{
+    background:var(--panel);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:30px 30px;
+    margin-bottom:26px;
+  }
+
+  .card.hero{
+    border-color:rgba(193,97,143,0.3);
+  }
+
+  .card h2{
+    font-family:"Montserrat",sans-serif;
+    font-weight:600;
+    font-size:0.98rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin:0 0 6px;
+    color:var(--text-1);
+  }
+
+  .card .desc{
+    color:var(--text-2);
+    font-size:0.85rem;
+    margin-bottom:24px;
+    line-height:1.6;
+    font-weight:300;
+  }
+
+  .field{
+    margin-bottom:24px;
+  }
+
+  .field label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:0.85rem;
+    color:var(--text-1);
+    margin-bottom:10px;
+    font-weight:500;
+  }
+
+  .field label .val{
+    color:var(--pink);
+    font-family:"Montserrat",monospace;
+    font-size:0.95rem;
+    font-weight:700;
+  }
+
+  input[type="range"]{
+    width:100%;
+    -webkit-appearance:none;
+    appearance:none;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--pink) 0%, var(--border) 0%);
+    outline:none;
+    cursor:pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--pink),var(--cyan));
+    border:none;
+    cursor:pointer;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--pink),var(--cyan));
+    border:none;
+    cursor:pointer;
+  }
+  input[type="range"]::-moz-range-track{
+    height:4px;
+    border-radius:999px;
+    background:var(--border);
+  }
+
+  .num-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .num-field{
+    flex:1;
+    min-width:150px;
+  }
+
+  .num-field label{
+    display:block;
+    font-size:0.8rem;
+    color:var(--text-1);
+    margin-bottom:7px;
+    font-weight:500;
+  }
+
+  input[type="number"], textarea{
+    width:100%;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    color:var(--text-0);
+    padding:11px 13px;
+    border-radius:10px;
+    font-size:0.9rem;
+    font-family:"Montserrat",monospace;
+    font-weight:400;
+  }
+  input[type="number"]:focus, textarea:focus{
+    outline:none;
+    border-color:var(--cyan);
+    box-shadow:0 0 0 3px var(--cyan-soft);
+  }
+
+  textarea{
+    line-height:1.6;
+    resize:vertical;
+    min-height:160px;
+  }
+
+  .result-block{
+    background:var(--pink-soft);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    display:flex;
+    align-items:center;
+    gap:26px;
+    flex-wrap:wrap;
+  }
+
+  .result-number{
+    font-family:"Montserrat",sans-serif;
+    font-size:2.9rem;
+    font-weight:700;
+    background:linear-gradient(120deg,var(--pink),var(--cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    line-height:1;
+  }
+
+  .result-number small{
+    font-size:0.85rem;
+    color:var(--text-1);
+    font-family:"Montserrat",sans-serif;
+    display:block;
+    margin-top:8px;
+    font-weight:500;
+    -webkit-text-fill-color:var(--text-1);
+  }
+
+  .result-detail{
+    flex:1;
+    min-width:220px;
+  }
+
+  .result-detail .formula{
+    font-family:"Montserrat",monospace;
+    font-size:0.8rem;
+    color:var(--text-2);
+    margin-bottom:8px;
+    word-break:break-word;
+  }
+
+  .result-detail .guidance{
+    font-size:0.87rem;
+    color:var(--text-1);
+    line-height:1.55;
+    font-weight:300;
+  }
+
+  .prob-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+    margin-bottom:24px;
+  }
+
+  .prob-card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 14px;
+    text-align:center;
+  }
+
+  .prob-card .label{
+    font-size:0.72rem;
+    color:var(--text-2);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:10px;
+    font-weight:500;
+  }
+
+  .prob-card .pct{
+    font-family:"Montserrat",sans-serif;
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--cyan);
+  }
+
+  .prob-card .frac{
+    font-size:0.7rem;
+    color:var(--text-2);
+    margin-top:5px;
+    font-family:"Montserrat",monospace;
+  }
+
+  .chart-wrap{
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px 12px;
+  }
+
+  .chart-title{
+    font-size:0.76rem;
+    color:var(--text-2);
+    margin-bottom:16px;
+    font-weight:500;
+  }
+
+  .chart-area{
+    display:flex;
+    gap:6px;
+  }
+
+  .y-axis-label{
+    flex-shrink:0;
+    width:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .y-axis-label span{
+    display:inline-block;
+    transform:rotate(-90deg);
+    white-space:nowrap;
+    font-size:0.7rem;
+    color:var(--text-2);
+  }
+
+  .chart-main{
+    flex:1;
+    min-width:0;
+  }
+
+  .x-axis-label{
+    text-align:center;
+    font-size:0.7rem;
+    color:var(--text-2);
+    margin-top:10px;
+  }
+
+  .chart{
+    display:flex;
+    align-items:flex-end;
+    gap:3px;
+    height:140px;
+    overflow-x:auto;
+    padding-bottom:4px;
+  }
+
+  .bar-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    height:100%;
+    min-width:22px;
+    flex:1;
+  }
+
+  .bar{
+    width:100%;
+    max-width:26px;
+    border-radius:4px 4px 2px 2px;
+    background:rgba(255,255,255,0.14);
+    transition:height 0.2s ease;
+    position:relative;
+  }
+
+  .bar.highlight{
+    background:var(--pink);
+  }
+
+  .bar-col .k-label{
+    font-size:0.64rem;
+    color:var(--text-2);
+    margin-top:8px;
+  }
+
+  .bar-col.highlight .k-label{
+    color:var(--pink);
+    font-weight:700;
+  }
+
+  .bar[title]{
+    cursor:help;
+  }
+
+  .error-msg{
+    color:#ff6b8b;
+    font-size:0.85rem;
+    background:rgba(255,63,120,0.08);
+    border:1px solid rgba(255,63,120,0.3);
+    border-radius:10px;
+    padding:11px 15px;
+    margin-bottom:18px;
+    font-weight:400;
+  }
+
+  .hint{
+    font-size:0.75rem;
+    color:var(--text-2);
+    margin-top:8px;
+    font-weight:300;
+  }
+
+  code{
+    background:rgba(255,255,255,0.06);
+    padding:2px 6px;
+    border-radius:5px;
+    font-family:"Montserrat",monospace;
+    font-size:0.85em;
+    color:var(--text-0);
+  }
+
+  .btn{
+    background:linear-gradient(120deg,var(--pink),var(--cyan));
+    color:#150a10;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-size:0.85rem;
+    font-weight:700;
+    font-family:"Montserrat",sans-serif;
+    cursor:pointer;
+    transition:transform 0.15s, opacity 0.15s;
+  }
+  .btn:hover{
+    transform:translateY(-1px);
+    opacity:0.9;
+  }
+  .btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
+  }
+
+  .btn-mini{
+    background:rgba(255,255,255,0.04);
+    color:var(--text-1);
+    border:1px solid var(--border);
+    padding:0 12px;
+    height:42px;
+    border-radius:9px;
+    font-size:0.75rem;
+    font-weight:600;
+    font-family:"Montserrat",sans-serif;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:border-color 0.15s, color 0.15s;
+  }
+  .btn-mini:hover{
+    border-color:var(--pink);
+    color:var(--text-0);
+  }
+
+  .spinner{
+    display:inline-block;
+    width:12px;
+    height:12px;
+    border:2px solid rgba(10,5,16,0.35);
+    border-top-color:#0a0510;
+    border-radius:50%;
+    animation:spin 0.7s linear infinite;
+    vertical-align:middle;
+    margin-right:8px;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .match-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:280px;
+    overflow-y:auto;
+  }
+
+  .match-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:9px 13px;
+    font-size:0.85rem;
+    font-weight:400;
+  }
+
+  .match-row .qty{
+    color:var(--text-2);
+    font-family:"Montserrat",monospace;
+    margin-right:6px;
+  }
+
+  .match-row .tag-badge{
+    font-size:0.66rem;
+    padding:3px 10px;
+    border-radius:999px;
+    background:var(--cyan-soft);
+    color:var(--cyan);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    white-space:nowrap;
+  }
+
+  .unmatched-list{
+    margin-top:16px;
+    font-size:0.78rem;
+    color:var(--text-2);
+    line-height:1.6;
+    font-weight:300;
+  }
+
+  .unmatched-list .name{
+    color:#ff6b8b;
+  }
+
+  .auto-note{
+    font-size:0.8rem;
+    color:var(--cyan);
+    margin-top:14px;
+    font-weight:500;
+  }
+
+  footer{
+    text-align:center;
+    color:var(--text-2);
+    font-size:0.74rem;
+    margin-top:40px;
+    font-weight:300;
+  }
+
+  footer a{
+    color:var(--text-1);
+    text-decoration:none;
+    border-bottom:1px solid var(--pink);
+    transition:color 0.15s;
+  }
+  footer a:hover{
+    color:var(--pink);
+  }
+
+  @media (max-width:560px){
+    .prob-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="top-line"></div>
+<div class="app">
+
+  <div class="app-header">
+    <h1>MTG Tempest's Land Calculator</h1>
+    <p class="subtitle">Based on the math by <a href="https://www.tcgplayer.com/content/author/Frank-Karsten/7f203152-211a-478d-8fee-464c2aeca2cd" target="_blank" rel="noopener">Frank Karsten</a></p>
+    <p class="subtitle">All credit to <a href="https://www.scryfall.com" target="_blank" rel="noopener">Scryfall</a> for the Tagging Service!</p>
+  </div>
+
+  <!-- LAND CALCULATOR -->
+  <section class="card hero">
+    <div class="desc">
+      <strong style="color:var(--text-1); font-weight:600;">31.42 + 3.13 &times; average mana value &minus; 0.28 &times; (cheap card draw / mana ramp spells)</strong>.
+      Calibrated for a 100-card deck, with MDFCs counted partially as lands. Move the sliders and the number below updates right away.
+    </div>
+
+    <div class="field">
+      <label>Average mana value of your spells <span class="val" id="amvVal">3.00</span></label>
+      <input type="range" id="amvSlider" min="0" max="6" step="0.05" value="3">
+    </div>
+
+    <div class="field">
+      <label>Cheap card draw / mana ramp spells <span class="val" id="rampVal">10</span></label>
+      <input type="range" id="rampSlider" min="0" max="25" step="1" value="10">
+    </div>
+
+    <div class="result-block">
+      <div class="result-number">
+        <span id="landRecommend">38–39</span>
+        <small>recommended lands</small>
+      </div>
+      <div class="result-detail">
+        <div class="formula" id="landFormula">31.42 + 3.13 &times; 3.00 &minus; 0.28 &times; 10 = 38.01</div>
+        <div class="guidance" id="landGuidance">Start with 38&ndash;39 lands. Cut one land for roughly every 3&ndash;4 cheap card draw or mana ramp spells.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECK TAG LOOKUP -->
+  <section class="card">
+    <h2>Decklist</h2>
+    <div class="desc">
+      Paste a decklist in the MTGO format. This only works with a 100-card list. It checks Scryfall's Tagger data for cards
+      tagged <strong>ramp</strong> or <strong>draw</strong> with mana value below 4, then updates the "cheap card draw / mana
+      ramp spells" slider above for you. This is the only part of the app that needs internet. It calls Scryfall's public API
+      for a moment when you click Analyze.
+    </div>
+
+    <div class="field">
+      <textarea id="decklistInput" spellcheck="false">1 Birds of Paradise
+1 Rampant Growth
+1 Sol Ring
+1 Forest
+1 Mountain</textarea>
+      <div class="hint" id="deckSizeNote"></div>
+    </div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <button class="btn" id="analyzeBtn">Analyze list</button>
+      <span id="analyzeStatus" class="hint"></span>
+    </div>
+
+    <div id="tagError" class="error-msg" style="display:none; margin-top:18px;"></div>
+
+    <div id="tagResults" style="display:none; margin-top:24px;">
+      <div class="result-block">
+        <div class="result-number">
+          <span id="tagCount">0</span>
+          <small>ramp/draw spells<br>(mv &lt; 4)</small>
+        </div>
+        <div class="result-detail">
+          <div class="guidance">
+            Weighted by quantity in your list. Based on Scryfall's oracle tags <code>ramp</code> and <code>draw</code>, filtered to mana value under 4.
+          </div>
+          <div class="auto-note" id="autoNote"></div>
+        </div>
+      </div>
+
+      <div class="chart-wrap" style="margin-top:18px;">
+        <div class="chart-title">Matched cards</div>
+        <div class="match-list" id="matchList"></div>
+      </div>
+
+      <div class="unmatched-list" id="unmatchedList"></div>
+    </div>
+  </section>
+
+  <!-- HYPERGEOMETRIC CALCULATOR -->
+  <section class="card">
+    <h2>Hypergeometric Calculator</h2>
+    <div class="desc">
+      Exact odds of drawing a given number of "successes" (lands, removal, whatever card type you're tracking) out of the
+      cards you've seen so far. Uses arbitrary-precision integer math, so there's no floating-point rounding error.
+    </div>
+
+    <div id="hyperError" class="error-msg" style="display:none;"></div>
+
+    <div class="num-row">
+      <div class="num-field">
+        <label>Deck size (N)</label>
+        <input type="number" id="deckSize" value="99" min="1" max="500">
+      </div>
+      <div class="num-field">
+        <label>Successes in deck (S)</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="number" id="categorySize" value="12" min="0" max="500" style="flex:1;">
+          <button type="button" class="btn-mini" id="useLandsBtn" title="Set S to the recommended lands count above">Lands</button>
+          <button type="button" class="btn-mini" id="resetSuccessesBtn" title="Reset S to 12">12</button>
+        </div>
+        <div class="hint">e.g. number of lands, ramp spells, or a card category</div>
+      </div>
+    </div>
+    <div class="num-row">
+      <div class="num-field">
+        <label>Cards seen / drawn (n)</label>
+        <input type="number" id="sampleSize" value="8" min="0" max="500">
+        <div class="hint">opening hand + draws by the turn in question</div>
+      </div>
+      <div class="num-field">
+        <label>Target count (t)</label>
+        <input type="number" id="targetCount" value="3" min="0" max="500">
+      </div>
+    </div>
+
+    <div class="prob-grid">
+      <div class="prob-card">
+        <div class="label">Exactly t</div>
+        <div class="pct" id="pExact">&mdash;</div>
+        <div class="frac" id="pExactFrac"></div>
+      </div>
+      <div class="prob-card">
+        <div class="label">At least t</div>
+        <div class="pct" id="pAtLeast">&mdash;</div>
+        <div class="frac" id="pAtLeastFrac"></div>
+      </div>
+      <div class="prob-card">
+        <div class="label">At most t</div>
+        <div class="pct" id="pAtMost">&mdash;</div>
+        <div class="frac" id="pAtMostFrac"></div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Full probability distribution (highlighted bar = target t)</div>
+      <div class="chart-area">
+        <div class="y-axis-label"><span>Probability</span></div>
+        <div class="chart-main">
+          <div class="chart" id="chart"></div>
+          <div class="x-axis-label">Number of successes (t)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer> 2026 &middot; <a href="https://linktr.ee/monarchtempest" target="_blank" rel="noopener">Linktree</a></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Slider fill visual ---------- */
+  function styleSliderFill(slider){
+    var min = parseFloat(slider.min), max = parseFloat(slider.max), val = parseFloat(slider.value);
+    var pct = ((val - min) / (max - min)) * 100;
+    slider.style.background = "linear-gradient(90deg, var(--pink), var(--cyan) " + pct + "%, var(--border) " + pct + "%)";
+  }
+
+  /* ---------- Land Calculator ---------- */
+  var amvSlider = document.getElementById("amvSlider");
+  var rampSlider = document.getElementById("rampSlider");
+  var amvVal = document.getElementById("amvVal");
+  var rampVal = document.getElementById("rampVal");
+  var landRecommend = document.getElementById("landRecommend");
+  var landFormula = document.getElementById("landFormula");
+  var landGuidance = document.getElementById("landGuidance");
+  var lastLandNearest = 0;
+
+  function computeLands(){
+    var amv = parseFloat(amvSlider.value);
+    var ramp = parseFloat(rampSlider.value);
+    var raw = 31.42 + 3.13 * amv - 0.28 * ramp;
+    var lo = Math.max(0, Math.floor(raw));
+    var hi = Math.max(0, Math.ceil(raw));
+    var nearest = Math.max(0, Math.round(raw));
+    lastLandNearest = nearest;
+
+    amvVal.textContent = amv.toFixed(2);
+    rampVal.textContent = ramp.toFixed(0);
+    styleSliderFill(amvSlider);
+    styleSliderFill(rampSlider);
+
+    landRecommend.textContent = (lo === hi) ? String(lo) : (lo + "–" + hi);
+
+    landFormula.innerHTML = "31.42 + 3.13 &times; " + amv.toFixed(2) + " &minus; 0.28 &times; " + ramp.toFixed(0) +
+      " = " + raw.toFixed(2);
+
+    var cutSpells = ramp > 0 ? " You've included " + ramp.toFixed(0) + " cheap draw/ramp spell(s) in this estimate." : "";
+    landGuidance.innerHTML = "Start with " + (lo === hi ? lo : lo + "–" + hi) +
+      " lands (nearest whole recommendation: " + nearest + "). Cut roughly one land for every 3–4 additional cheap card draw or mana ramp spells." + cutSpells;
+  }
+
+  amvSlider.addEventListener("input", computeLands);
+  rampSlider.addEventListener("input", computeLands);
+  computeLands();
+
+  /* ---------- Hypergeometric Calculator (exact BigInt math) ---------- */
+
+  function combinationsBig(nNum, kNum){
+    if (kNum < 0 || kNum > nNum || nNum < 0) return 0n;
+    kNum = Math.min(kNum, nNum - kNum);
+    var result = 1n;
+    for (var i = 0; i < kNum; i++){
+      result = (result * BigInt(nNum - i)) / BigInt(i + 1);
+    }
+    return result;
+  }
+
+  function bigRatioToNumber(num, den){
+    if (den === 0n) return 0;
+    var scale = 1000000000000000000n; // 1e18
+    var scaled = (num * scale) / den;
+    return Number(scaled) / 1e18;
+  }
+
+  // Full exact distribution of P(X = k) for k in valid range.
+  function hyperDistribution(N, K, n){
+    var kMin = Math.max(0, n - (N - K));
+    var kMax = Math.min(K, n);
+    var denom = combinationsBig(N, n);
+    var dist = [];
+    for (var k = kMin; k <= kMax; k++){
+      var num = combinationsBig(K, k) * combinationsBig(N - K, n - k);
+      dist.push({ k: k, p: bigRatioToNumber(num, denom), num: num, den: denom });
+    }
+    return dist;
+  }
+
+  function fmtPct(p){
+    return (p * 100).toFixed(2) + "%";
+  }
+
+  function simplifyFrac(num, den){
+    function gcd(a, b){ return b === 0n ? a : gcd(b, a % b); }
+    if (den === 0n) return "0/0";
+    var g = gcd(num < 0n ? -num : num, den);
+    if (g === 0n) g = 1n;
+    var rn = num / g, rd = den / g;
+    if (rn.toString().length > 15 || rd.toString().length > 15) return null;
+    return rn.toString() + " / " + rd.toString();
+  }
+
+  var deckSizeEl = document.getElementById("deckSize");
+  var categorySizeEl = document.getElementById("categorySize");
+  var sampleSizeEl = document.getElementById("sampleSize");
+  var targetCountEl = document.getElementById("targetCount");
+  var hyperError = document.getElementById("hyperError");
+  var chart = document.getElementById("chart");
+
+  var pExact = document.getElementById("pExact");
+  var pAtLeast = document.getElementById("pAtLeast");
+  var pAtMost = document.getElementById("pAtMost");
+  var pExactFrac = document.getElementById("pExactFrac");
+  var pAtLeastFrac = document.getElementById("pAtLeastFrac");
+  var pAtMostFrac = document.getElementById("pAtMostFrac");
+
+  function showError(msg){
+    hyperError.style.display = "block";
+    hyperError.textContent = msg;
+  }
+  function clearError(){
+    hyperError.style.display = "none";
+    hyperError.textContent = "";
+  }
+
+  function computeHyper(){
+    var N = parseInt(deckSizeEl.value, 10);
+    var K = parseInt(categorySizeEl.value, 10);
+    var n = parseInt(sampleSizeEl.value, 10);
+    var k = parseInt(targetCountEl.value, 10);
+
+    if ([N, K, n, k].some(function(v){ return isNaN(v) || v < 0; })){
+      showError("All fields must be non-negative whole numbers.");
+      return;
+    }
+    if (K > N){
+      showError("Successes in deck (S) cannot exceed deck size (N).");
+      return;
+    }
+    if (n > N){
+      showError("Cards seen (n) cannot exceed deck size (N).");
+      return;
+    }
+    clearError();
+
+    var dist = hyperDistribution(N, K, n);
+
+    var exactEntry = dist.filter(function(d){ return d.k === k; })[0];
+    var exactP = exactEntry ? exactEntry.p : 0;
+    var exactFracStr = exactEntry ? simplifyFrac(exactEntry.num, exactEntry.den) : simplifyFrac(0n, 1n);
+
+    var atLeastEntries = dist.filter(function(d){ return d.k >= k; });
+    var atLeastP = atLeastEntries.reduce(function(s, d){ return s + d.p; }, 0);
+
+    var atMostEntries = dist.filter(function(d){ return d.k <= k; });
+    var atMostP = atMostEntries.reduce(function(s, d){ return s + d.p; }, 0);
+
+    pExact.textContent = fmtPct(exactP);
+    pAtLeast.textContent = fmtPct(atLeastP);
+    pAtMost.textContent = fmtPct(atMostP);
+
+    pExactFrac.textContent = exactFracStr ? ("= " + exactFracStr) : "";
+    pAtLeastFrac.textContent = "sum over " + atLeastEntries.length + " outcome(s)";
+    pAtMostFrac.textContent = "sum over " + atMostEntries.length + " outcome(s)";
+
+    renderChart(dist, k);
+  }
+
+  function renderChart(dist, targetK){
+    chart.innerHTML = "";
+    if (dist.length === 0) return;
+    var maxP = Math.max.apply(null, dist.map(function(d){ return d.p; }));
+    if (maxP <= 0) maxP = 1;
+
+    dist.forEach(function(d){
+      var col = document.createElement("div");
+      col.className = "bar-col" + (d.k === targetK ? " highlight" : "");
+
+      var bar = document.createElement("div");
+      bar.className = "bar" + (d.k === targetK ? " highlight" : "");
+      var heightPct = Math.max(2, (d.p / maxP) * 100);
+      bar.style.height = heightPct + "%";
+      bar.title = "P(X = " + d.k + ") = " + fmtPct(d.p);
+
+      var label = document.createElement("div");
+      label.className = "k-label";
+      label.textContent = d.k;
+
+      col.appendChild(bar);
+      col.appendChild(label);
+      chart.appendChild(col);
+    });
+  }
+
+  [deckSizeEl, categorySizeEl, sampleSizeEl, targetCountEl].forEach(function(el){
+    el.addEventListener("input", computeHyper);
+  });
+
+  var useLandsBtn = document.getElementById("useLandsBtn");
+  var resetSuccessesBtn = document.getElementById("resetSuccessesBtn");
+
+  useLandsBtn.addEventListener("click", function(){
+    categorySizeEl.value = lastLandNearest;
+    computeHyper();
+  });
+
+  resetSuccessesBtn.addEventListener("click", function(){
+    categorySizeEl.value = 12;
+    computeHyper();
+  });
+
+  computeHyper();
+
+  /* ---------- Deck Tag Cross-Reference (live Scryfall lookup) ---------- */
+
+  var decklistInput = document.getElementById("decklistInput");
+  var analyzeBtn = document.getElementById("analyzeBtn");
+  var analyzeStatus = document.getElementById("analyzeStatus");
+  var tagError = document.getElementById("tagError");
+  var tagResults = document.getElementById("tagResults");
+  var tagCount = document.getElementById("tagCount");
+  var matchList = document.getElementById("matchList");
+  var unmatchedList = document.getElementById("unmatchedList");
+  var autoNote = document.getElementById("autoNote");
+  var deckSizeNote = document.getElementById("deckSizeNote");
+
+  function parseDecklist(text){
+    var lines = text.split(/\r?\n/);
+    var entries = [];
+    var re = /^\s*(\d+)\s*x?\s+(.+?)\s*$/i;
+    lines.forEach(function(line){
+      var trimmed = line.trim();
+      if (!trimmed) return;
+      if (trimmed.indexOf("//") === 0 || trimmed.indexOf("#") === 0) return;
+      if (/^(deck|sideboard|maybeboard|commander)\s*:?\s*$/i.test(trimmed)) return;
+      var m = trimmed.match(re);
+      var qty, name;
+      if (m){
+        qty = parseInt(m[1], 10);
+        name = m[2].trim();
+      } else {
+        qty = 1;
+        name = trimmed;
+      }
+      name = name.replace(/\s*\([A-Za-z0-9]+\)\s*[\w-]*\s*$/, "").trim();
+      if (name) entries.push({ name: name, qty: qty });
+    });
+    return entries;
+  }
+
+  function chunkArray(arr, size){
+    var out = [];
+    for (var i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+    return out;
+  }
+
+  function escapeNameForQuery(name){
+    return name.replace(/"/g, "'");
+  }
+
+  function buildTagQuery(names){
+    var clauses = names.map(function(n){ return '!"' + escapeNameForQuery(n) + '"'; }).join(" or ");
+    return "(otag:ramp or otag:draw) mv<4 (" + clauses + ")";
+  }
+
+  function formatMV(mv){
+    var num = Number(mv);
+    return (num % 1 === 0) ? String(num) : num.toFixed(1);
+  }
+
+  function fetchMatchesForBatch(names){
+    var query = buildTagQuery(names);
+    var url = "https://api.scryfall.com/cards/search?" +
+      new URLSearchParams({ q: query, unique: "cards" }).toString();
+    return fetch(url, { headers: { "Accept": "application/json" } }).then(function(res){
+      if (res.status === 404) return { data: [] }; // Scryfall's "no matches" response
+      if (!res.ok) throw new Error("Scryfall returned HTTP " + res.status);
+      return res.json();
+    }).then(function(data){ return data.data || []; });
+  }
+
+  // Scryfall's search parser has an undocumented limit on how many OR'd terms a query
+  // can contain (empirically confirmed to break between 48-49 name clauses). If a batch
+  // ever trips that limit (or any other transient error), split it and retry the halves
+  // instead of failing the whole analysis.
+  async function fetchMatchesWithFallback(names){
+    try {
+      return await fetchMatchesForBatch(names);
+    } catch (err){
+      if (names.length <= 1) return [];
+      var mid = Math.ceil(names.length / 2);
+      var left = await fetchMatchesWithFallback(names.slice(0, mid));
+      var right = await fetchMatchesWithFallback(names.slice(mid));
+      return left.concat(right);
+    }
+  }
+
+  function showTagError(msg){
+    tagError.style.display = "block";
+    tagError.textContent = msg;
+  }
+
+  async function analyzeDecklist(){
+    var entries = parseDecklist(decklistInput.value);
+
+    tagError.style.display = "none";
+    tagResults.style.display = "none";
+
+    if (entries.length === 0){
+      showTagError('Paste a decklist first, one card per line (e.g. "1 Birds of Paradise").');
+      deckSizeNote.textContent = "";
+      return;
+    }
+
+    var totalCards = entries.reduce(function(sum, e){ return sum + e.qty; }, 0);
+    deckSizeNote.textContent = (totalCards === 100)
+      ? "✓ 100-card deck detected."
+      : "⚠ This list has " + totalCards + " card(s). The land formula and this analyzer assume a 100-card deck.";
+
+    var qtyByName = {};
+    var order = [];
+    entries.forEach(function(e){
+      var key = e.name.toLowerCase();
+      if (!(key in qtyByName)){
+        qtyByName[key] = { name: e.name, qty: 0 };
+        order.push(key);
+      }
+      qtyByName[key].qty += e.qty;
+    });
+
+    var uniqueNames = order.map(function(k){ return qtyByName[k].name; });
+    var batches = chunkArray(uniqueNames, 25);
+
+    analyzeBtn.disabled = true;
+    analyzeBtn.innerHTML = '<span class="spinner"></span>Checking Scryfall…';
+    analyzeStatus.textContent = "";
+
+    try {
+      var matchedInfo = {};
+      for (var i = 0; i < batches.length; i++){
+        analyzeStatus.textContent = "Querying batch " + (i + 1) + " of " + batches.length + "…";
+        var cards = await fetchMatchesWithFallback(batches[i]);
+        cards.forEach(function(c){
+          var candidates = [c.name];
+          if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
+          candidates.forEach(function(cand){
+            var key = cand.trim().toLowerCase();
+            matchedInfo[key] = { name: cand.trim(), mv: c.cmc, fullName: c.name };
+          });
+        });
+      }
+
+      var totalCount = 0;
+      var matchedRows = [];
+      var unmatchedNames = [];
+
+      order.forEach(function(key){
+        var entry = qtyByName[key];
+        if (matchedInfo[key]){
+          totalCount += entry.qty;
+          matchedRows.push({
+            name: entry.name,
+            qty: entry.qty,
+            mv: matchedInfo[key].mv
+          });
+        } else {
+          unmatchedNames.push(entry.name);
+        }
+      });
+
+      tagCount.textContent = totalCount;
+
+      matchList.innerHTML = "";
+      if (matchedRows.length === 0){
+        matchList.innerHTML = '<div class="hint">No cards in your list matched a ramp/draw tag under mana value 4.</div>';
+      } else {
+        matchedRows.forEach(function(r){
+          var row = document.createElement("div");
+          row.className = "match-row";
+          row.innerHTML = '<span><span class="qty">' + r.qty + '×</span>' + r.name + '</span>' +
+            '<span class="tag-badge">mv ' + formatMV(r.mv) + '</span>';
+          matchList.appendChild(row);
+        });
+      }
+
+      unmatchedList.innerHTML = unmatchedNames.length
+        ? "Not counted (no ramp/draw tag under mv 4, or name not recognized by Scryfall): " +
+          unmatchedNames.map(function(n){ return '<span class="name">' + n.replace(/</g, "&lt;") + "</span>"; }).join(", ")
+        : "";
+
+      // Automatically apply the result to the Land Calculator's ramp slider.
+      var min = parseInt(rampSlider.min, 10);
+      var max = parseInt(rampSlider.max, 10);
+      var clamped = Math.max(min, Math.min(max, totalCount));
+      rampSlider.value = clamped;
+      computeLands();
+      autoNote.textContent = (clamped === totalCount)
+        ? "✓ Applied to the Land Calculator above (ramp/draw = " + clamped + ")."
+        : "✓ Applied to the Land Calculator above, clamped to " + clamped + " (slider max is " + max + "; raw count was " + totalCount + ").";
+
+      tagResults.style.display = "block";
+      analyzeStatus.textContent = "Done. Checked " + uniqueNames.length + " unique card(s).";
+    } catch (err){
+      showTagError("Couldn't reach Scryfall (" + err.message + "). Check your internet connection and try again.");
+    } finally {
+      analyzeBtn.disabled = false;
+      analyzeBtn.textContent = "Analyze list";
+    }
+  }
+
+  analyzeBtn.addEventListener("click", analyzeDecklist);
+})();
+</script>
+</body>
+</html>
