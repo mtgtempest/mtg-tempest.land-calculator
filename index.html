@@ -572,23 +572,23 @@
   <section class="card hero">
     <div class="desc">
       <strong style="color:var(--text-1); font-weight:600;">31.42 + 3.13 &times; average mana value &minus; 0.28 &times; (cheap card draw / mana ramp spells)</strong>.
-      Calibrated for a 100-card deck, with MDFCs counted partially as lands. Move the sliders and the number below updates right away.
+      Calibrated for a 100-card deck, with MDFCs counted partially as lands. Find the average Mana Value of your SPELLS and move the slider to match. If you would like a generalized analysis of your deck's draw + ramp, then paste and analyze your deck below. If not, you may move the slider manually.
     </div>
 
     <div class="field">
       <label>Average mana value of your spells <span class="val" id="amvVal">3.00</span></label>
-      <input type="range" id="amvSlider" min="0" max="6" step="0.05" value="3">
+      <input type="range" id="amvSlider" min="0" max="6" step="0.01" value="3">
     </div>
 
     <div class="field">
       <label>Cheap card draw / mana ramp spells <span class="val" id="rampVal">10</span></label>
-      <input type="range" id="rampSlider" min="0" max="25" step="1" value="10">
+      <input type="range" id="rampSlider" min="0" max="99" step="1" value="10">
     </div>
 
     <div class="result-block">
       <div class="result-number">
         <span id="landRecommend">38–39</span>
-        <small>recommended lands</small>
+        <small>Aproximate <strong>minimum</strong> number of lands</small>
       </div>
       <div class="result-detail">
         <div class="formula" id="landFormula">31.42 + 3.13 &times; 3.00 &minus; 0.28 &times; 10 = 38.01</div>
@@ -601,9 +601,9 @@
   <section class="card">
     <h2>Decklist</h2>
     <div class="desc">
-      Paste a decklist in the MTGO format. This only works with a 100-card list. It checks Scryfall's Tagger data for cards
-      tagged <strong>ramp</strong> or <strong>draw</strong> with mana value below 4, then updates the "cheap card draw / mana
-      ramp spells" slider above for you. This is the only part of the app that needs internet. It calls Scryfall's public API
+      Paste a decklist in the MTGO format. This only works with a 100-card list and will fail to check any cards with alternative names from "the Omenpaths". It checks <strong>Scryfall's Tagger data</strong> for cards
+      tagged <strong>ramp</strong> or <strong>draw</strong> with mana value below 4 (which includes lands), then updates the "cheap card draw / mana
+      ramp spells" slider above automatically after analysis. This is the only part of the app that needs internet. It calls Scryfall's public API
       for a moment when you click Analyze.
     </div>
 
