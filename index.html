@@ -53,7 +53,7 @@
   }
 
   .app-header{
-    text-align:left;
+    text-align:center;
     margin-bottom:40px;
   }
 
@@ -62,8 +62,15 @@
     font-weight:700;
     font-size:1.85rem;
     letter-spacing:-0.01em;
-    margin:0 0 10px;
-    color:var(--text-0);
+    margin:0 0 4px;
+    color:var(--cyan);
+  }
+
+  .version-tag{
+    font-size:0.7rem;
+    color:var(--text-2);
+    font-weight:500;
+    margin-bottom:10px;
   }
 
   .app-header .subtitle{
@@ -83,6 +90,10 @@
     color:var(--pink);
   }
 
+  .app-header .subtitle + .subtitle{
+    margin-top:6px;
+  }
+
   .card{
     background:var(--panel);
     backdrop-filter:blur(18px);
@@ -97,6 +108,20 @@
     border-color:rgba(193,97,143,0.3);
   }
 
+  .card.hyper{
+    padding:40px 38px;
+  }
+  .card.hyper .desc{
+    margin-bottom:32px;
+  }
+  .card.hyper .num-row{
+    margin-bottom:6px;
+  }
+  .card.hyper .prob-grid{
+    margin-top:28px;
+    margin-bottom:32px;
+  }
+
   .card h2{
     font-family:"Montserrat",sans-serif;
     font-weight:600;
@@ -105,6 +130,7 @@
     letter-spacing:0.06em;
     margin:0 0 6px;
     color:var(--text-1);
+    text-align:center;
   }
 
   .card .desc{
@@ -173,6 +199,10 @@
     display:flex;
     gap:14px;
     flex-wrap:wrap;
+  }
+
+  .num-row + .num-row{
+    margin-top:18px;
   }
 
   .num-field{
@@ -276,6 +306,10 @@
     border-radius:12px;
     padding:18px 14px;
     text-align:center;
+  }
+
+  .prob-card .label .var-t{
+    text-transform:lowercase;
   }
 
   .prob-card .label{
@@ -464,6 +498,27 @@
     color:var(--text-0);
   }
 
+  .btn-danger{
+    background:rgba(255,80,80,0.12);
+    color:#ff8a8a;
+    border:1px solid rgba(255,80,80,0.4);
+    padding:12px 22px;
+    border-radius:10px;
+    font-size:0.85rem;
+    font-weight:700;
+    font-family:"Montserrat",sans-serif;
+    cursor:pointer;
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .btn-danger:hover{
+    background:rgba(255,80,80,0.22);
+    border-color:rgba(255,80,80,0.65);
+  }
+  .btn-danger:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+  }
+
   .spinner{
     display:inline-block;
     width:12px;
@@ -525,7 +580,12 @@
   }
 
   .unmatched-list .name{
-    color:#ff6b8b;
+    color:var(--text-2);
+  }
+
+  .unmatched-list .unmatched-label{
+    color:var(--text-0);
+    font-weight:700;
   }
 
   .auto-note{
@@ -533,6 +593,52 @@
     color:var(--cyan);
     margin-top:14px;
     font-weight:500;
+  }
+
+  .mv-summary{
+    margin-top:18px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .mv-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:10px 14px;
+    transition:border-color 0.15s, background 0.15s;
+  }
+
+  .mv-row.active{
+    border-color:var(--cyan);
+    background:var(--cyan-soft);
+  }
+
+  .mv-row .mv-applied-tag{
+    font-size:0.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--cyan);
+  }
+
+  .mv-label{
+    flex:1;
+    min-width:200px;
+    font-size:0.83rem;
+    color:var(--text-1);
+  }
+
+  .mv-value{
+    font-family:"Montserrat",monospace;
+    font-weight:700;
+    color:var(--pink);
+    font-size:0.95rem;
   }
 
   footer{
@@ -564,6 +670,7 @@
 
   <div class="app-header">
     <h1>MTG Tempest's Land Calculator</h1>
+    <div class="version-tag">v1.1.0</div>
     <p class="subtitle">Based on the math by <a href="https://www.tcgplayer.com/content/article/How-Many-Lands-Do-You-Need-in-Your-Deck-An-Updated-Analysis/cd1c1a24-d439-4a8e-b369-b936edb0b38a/" target="_blank" rel="noopener">Frank Karsten</a></p>
     <p class="subtitle">All credit to <a href="https://www.scryfall.com" target="_blank" rel="noopener">Scryfall</a> for the Tagging Service!</p>
   </div>
@@ -588,11 +695,11 @@
     <div class="result-block">
       <div class="result-number">
         <span id="landRecommend">38–39</span>
-        <small>Approximate <strong>minimum</strong> number of lands</small>
+        <small>Approximate <strong>minimum</strong><br>number of lands</small>
       </div>
       <div class="result-detail">
         <div class="formula" id="landFormula">31.42 + 3.13 &times; 3.00 &minus; 0.28 &times; 10 = 38.01</div>
-        <div class="guidance" id="landGuidance">Start with 38&ndash;39 lands. Cut one land for roughly every 3&ndash;4 cheap card draw or mana ramp spells.</div>
+        <div class="guidance" id="landGuidance">Start with 42 lands. Cut one land for roughly every 3&ndash;4 cheap card draw or mana ramp spells.</div>
       </div>
     </div>
   </section>
@@ -601,10 +708,10 @@
   <section class="card">
     <h2>Decklist</h2>
     <div class="desc">
-      Paste a decklist in the MTGO format. This only works with a 100-card list and will fail to check any cards with alternative names from "the Omenpaths". It checks <strong>Scryfall's Tagger data</strong> for cards
-      tagged <strong>ramp</strong> or <strong>draw</strong> with mana value below 4 (which includes lands), then updates the "cheap card draw / mana
-      ramp spells" slider above automatically after analysis. This is the only part of the app that needs internet. It calls Scryfall's public API
-      for a moment when you click Analyze.
+      Paste a decklist in the MTGO format. This only works with a 100-card list and will fail to check any cards with alternative names from "the Omenpaths". Any <code>SIDEBOARD:</code> or <code>MAYBEBOARD:</code> section is ignored. It checks <strong>Scryfall's Tagger data</strong> for cards
+      tagged <code>ramp</code> or <code>draw</code> with mana value below 4 (which includes lands), then updates the "cheap card draw / mana
+      ramp spells" slider and the average mana value slider above automatically after analysis. This is the only part of the app that needs internet.
+      It calls Scryfall's public API for a moment when you click Analyze.
     </div>
 
     <div class="field">
@@ -614,10 +721,12 @@
 1 Forest
 1 Mountain</textarea>
       <div class="hint" id="deckSizeNote"></div>
+      <div class="hint" id="sideboardNote"></div>
     </div>
 
     <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
       <button class="btn" id="analyzeBtn">Analyze list</button>
+      <button type="button" class="btn-danger" id="analyzeAnywaysBtn" style="display:none;">Analyze Anyways</button>
       <span id="analyzeStatus" class="hint"></span>
     </div>
 
@@ -637,17 +746,34 @@
         </div>
       </div>
 
+      <div class="mv-summary" id="mvSummary" style="display:none;">
+        <div class="mv-row" id="mvInclRow">
+          <span class="mv-label">Avg MV of spells (including commander)</span>
+          <span class="mv-value" id="mvInclValue">&mdash;</span>
+          <span class="mv-applied-tag" id="mvInclTag" style="display:none;">Applied</span>
+          <button type="button" class="btn-mini" id="useMvInclBtn">Use this &rarr;</button>
+        </div>
+        <div class="mv-row" id="mvExclRow" style="display:none;">
+          <span class="mv-label">Avg MV of spells (excluding commander)</span>
+          <span class="mv-value" id="mvExclValue">&mdash;</span>
+          <span class="mv-applied-tag" id="mvExclTag" style="display:none;">Applied</span>
+          <button type="button" class="btn-mini" id="useMvExclBtn">Use this &rarr;</button>
+        </div>
+        <div class="hint" id="commanderNote"></div>
+      </div>
+
       <div class="chart-wrap" style="margin-top:18px;">
         <div class="chart-title">Matched cards</div>
         <div class="match-list" id="matchList"></div>
       </div>
 
       <div class="unmatched-list" id="unmatchedList"></div>
+      <div class="unmatched-list" id="notFoundList"></div>
     </div>
   </section>
 
   <!-- HYPERGEOMETRIC CALCULATOR -->
-  <section class="card">
+  <section class="card hyper">
     <h2>Hypergeometric Calculator</h2>
     <div class="desc">
       Exact odds of drawing a given number of "successes" (lands, removal, whatever card type you're tracking) out of the
@@ -664,17 +790,17 @@
       <div class="num-field">
         <label>Successes in deck (S)</label>
         <div style="display:flex; gap:8px; align-items:center;">
-          <input type="number" id="categorySize" value="12" min="0" max="500" style="flex:1;">
+          <input type="number" id="categorySize" value="42" min="0" max="500" style="flex:1;">
           <button type="button" class="btn-mini" id="useLandsBtn" title="Set S to the recommended lands count above">Lands</button>
-          <button type="button" class="btn-mini" id="resetSuccessesBtn" title="Reset S to 12">12</button>
+          <button type="button" class="btn-mini" id="resetSuccessesBtn" title="Reset S to 42">42</button>
         </div>
         <div class="hint">e.g. number of lands, ramp spells, or a card category</div>
       </div>
     </div>
     <div class="num-row">
       <div class="num-field">
-        <label>Cards seen / drawn (n)</label>
-        <input type="number" id="sampleSize" value="8" min="0" max="500">
+        <label>Cards seen / drawn (c)</label>
+        <input type="number" id="sampleSize" value="7" min="0" max="500">
         <div class="hint">opening hand + draws by the turn in question</div>
       </div>
       <div class="num-field">
@@ -685,17 +811,17 @@
 
     <div class="prob-grid">
       <div class="prob-card">
-        <div class="label">Exactly t</div>
+        <div class="label">Exactly <span class="var-t">t</span></div>
         <div class="pct" id="pExact">&mdash;</div>
         <div class="frac" id="pExactFrac"></div>
       </div>
       <div class="prob-card">
-        <div class="label">At least t</div>
+        <div class="label">At least <span class="var-t">t</span></div>
         <div class="pct" id="pAtLeast">&mdash;</div>
         <div class="frac" id="pAtLeastFrac"></div>
       </div>
       <div class="prob-card">
-        <div class="label">At most t</div>
+        <div class="label">At most <span class="var-t">t</span></div>
         <div class="pct" id="pAtMost">&mdash;</div>
         <div class="frac" id="pAtMostFrac"></div>
       </div>
@@ -757,7 +883,7 @@
       " = " + raw.toFixed(2);
 
     var cutSpells = ramp > 0 ? " You've included " + ramp.toFixed(0) + " cheap draw/ramp spell(s) in this estimate." : "";
-    landGuidance.innerHTML = "Start with about 42 lands. Cut roughly one land for every 3–4 additional cheap card draw or mana ramp spells." + cutSpells;
+    landGuidance.innerHTML = "Start with 42 lands. Cut roughly one land for every 3–4 additional cheap card draw or mana ramp spells." + cutSpells;
   }
 
   amvSlider.addEventListener("input", computeLands);
@@ -848,7 +974,7 @@
       return;
     }
     if (n > N){
-      showError("Cards seen (n) cannot exceed deck size (N).");
+      showError("Cards seen (c) cannot exceed deck size (N).");
       return;
     }
     clearError();
@@ -915,7 +1041,7 @@
   });
 
   resetSuccessesBtn.addEventListener("click", function(){
-    categorySizeEl.value = 12;
+    categorySizeEl.value = 42;
     computeHyper();
   });
 
@@ -931,18 +1057,78 @@
   var tagCount = document.getElementById("tagCount");
   var matchList = document.getElementById("matchList");
   var unmatchedList = document.getElementById("unmatchedList");
+  var notFoundList = document.getElementById("notFoundList");
   var autoNote = document.getElementById("autoNote");
   var deckSizeNote = document.getElementById("deckSizeNote");
+  var sideboardNote = document.getElementById("sideboardNote");
+  var analyzeAnywaysBtn = document.getElementById("analyzeAnywaysBtn");
+  var mvSummary = document.getElementById("mvSummary");
+  var mvInclRow = document.getElementById("mvInclRow");
+  var mvInclValue = document.getElementById("mvInclValue");
+  var mvInclTag = document.getElementById("mvInclTag");
+  var mvExclRow = document.getElementById("mvExclRow");
+  var mvExclValue = document.getElementById("mvExclValue");
+  var mvExclTag = document.getElementById("mvExclTag");
+  var commanderNote = document.getElementById("commanderNote");
+  var useMvInclBtn = document.getElementById("useMvInclBtn");
+  var useMvExclBtn = document.getElementById("useMvExclBtn");
+  var lastMvIncl = null;
+  var lastMvExcl = null;
 
+  function applyMvToSlider(mv){
+    if (mv === null) return;
+    var aMin = parseFloat(amvSlider.min);
+    var aMax = parseFloat(amvSlider.max);
+    amvSlider.value = Math.max(aMin, Math.min(aMax, mv)).toFixed(2);
+    computeLands();
+  }
+
+  // Highlights whichever of the two figures is currently applied to the slider,
+  // so switching back and forth has a clear "you are here" indicator.
+  function setActiveMv(which){
+    mvInclRow.classList.toggle("active", which === "incl");
+    mvInclTag.style.display = which === "incl" ? "inline" : "none";
+    mvExclRow.classList.toggle("active", which === "excl");
+    mvExclTag.style.display = which === "excl" ? "inline" : "none";
+  }
+
+  useMvInclBtn.addEventListener("click", function(){
+    applyMvToSlider(lastMvIncl);
+    setActiveMv("incl");
+  });
+  useMvExclBtn.addEventListener("click", function(){
+    applyMvToSlider(lastMvExcl);
+    setActiveMv("excl");
+  });
+
+  // Parses a decklist into blank-line-separated groups. A SIDEBOARD:/MAYBEBOARD:
+  // header excludes its group entirely from analysis. A COMMANDER: header flags its
+  // group as the commander (still included in totals/analysis, just tagged). If no
+  // header is given, a lone trailing group containing exactly one card is assumed to
+  // be the commander (common export style: 99 cards, blank line, then the commander).
   function parseDecklist(text){
     var lines = text.split(/\r?\n/);
-    var entries = [];
     var re = /^\s*(\d+)\s*x?\s+(.+?)\s*$/i;
+    var groups = [];
+    var currentGroup = null;
+
     lines.forEach(function(line){
       var trimmed = line.trim();
-      if (!trimmed) return;
+      if (!trimmed){
+        currentGroup = null;
+        return;
+      }
       if (trimmed.indexOf("//") === 0 || trimmed.indexOf("#") === 0) return;
-      if (/^(deck|sideboard|maybeboard|commander)\s*:?\s*$/i.test(trimmed)) return;
+
+      if (!currentGroup){
+        currentGroup = { type: "plain", lines: [] };
+        groups.push(currentGroup);
+      }
+
+      if (/^(sideboard|maybeboard)\s*:?\s*$/i.test(trimmed)){ currentGroup.type = "sideboard"; return; }
+      if (/^commander\s*:?\s*$/i.test(trimmed)){ currentGroup.type = "commander"; return; }
+      if (/^deck\s*:?\s*$/i.test(trimmed)) return;
+
       var m = trimmed.match(re);
       var qty, name;
       if (m){
@@ -953,9 +1139,43 @@
         name = trimmed;
       }
       name = name.replace(/\s*\([A-Za-z0-9]+\)\s*[\w-]*\s*$/, "").trim();
-      if (name) entries.push({ name: name, qty: qty });
+      if (!name) return;
+      currentGroup.lines.push({ name: name, qty: qty });
     });
-    return entries;
+
+    if (groups.length > 1){
+      var last = groups[groups.length - 1];
+      if (last.type === "plain" && last.lines.length === 1) last.type = "commander";
+    }
+
+    var entries = [];
+    var sideboardExcluded = [];
+    groups.forEach(function(g){
+      g.lines.forEach(function(c){
+        if (g.type === "sideboard"){
+          sideboardExcluded.push({ name: c.name, qty: c.qty });
+        } else {
+          entries.push({ name: c.name, qty: c.qty, isCommander: g.type === "commander" });
+        }
+      });
+    });
+
+    return { entries: entries, sideboardExcluded: sideboardExcluded };
+  }
+
+  function dedupeByName(list){
+    var qtyByName = {};
+    var order = [];
+    list.forEach(function(e){
+      var key = e.name.toLowerCase();
+      if (!(key in qtyByName)){
+        qtyByName[key] = { name: e.name, qty: 0, isCommander: false };
+        order.push(key);
+      }
+      qtyByName[key].qty += e.qty;
+      if (e.isCommander) qtyByName[key].isCommander = true;
+    });
+    return { qtyByName: qtyByName, order: order };
   }
 
   function chunkArray(arr, size){
@@ -1005,20 +1225,75 @@
     }
   }
 
+  // Looks up cmc + type_line for a batch of card names via Scryfall's collection
+  // endpoint (max 75 identifiers per request), used to compute average mana value
+  // of nonland "spells" in the list.
+  function fetchCardDataBatch(names){
+    var identifiers = names.map(function(n){ return { name: n }; });
+    return fetch("https://api.scryfall.com/cards/collection", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ identifiers: identifiers })
+    }).then(function(res){
+      if (!res.ok) throw new Error("Scryfall collection lookup returned HTTP " + res.status);
+      return res.json();
+    }).then(function(data){ return data.data || []; });
+  }
+
+  // The collection endpoint only exact-matches a card's full display name, which for a
+  // modal double-faced card (MDFC) is "Front // Back" — a plain "Agadeem's Awakening"
+  // won't match there even though it's a real card. Fall back to a fuzzy single-card
+  // lookup (which does resolve MDFCs by either face name) for anything collection missed.
+  function fetchCardDataFuzzy(name){
+    var url = "https://api.scryfall.com/cards/named?" + new URLSearchParams({ fuzzy: name }).toString();
+    return fetch(url, { headers: { "Accept": "application/json" } }).then(function(res){
+      if (!res.ok) return null;
+      return res.json();
+    }).catch(function(){ return null; });
+  }
+
+  async function fetchAllCardData(names){
+    var batches = chunkArray(names, 75);
+    var all = [];
+    for (var i = 0; i < batches.length; i++){
+      var found = await fetchCardDataBatch(batches[i]);
+      all = all.concat(found);
+    }
+
+    var foundNames = {};
+    all.forEach(function(c){ foundNames[c.name.trim().toLowerCase()] = true; });
+    var missing = names.filter(function(n){ return !foundNames[n.trim().toLowerCase()]; });
+
+    if (missing.length){
+      var fuzzyResults = await Promise.all(missing.map(fetchCardDataFuzzy));
+      fuzzyResults.forEach(function(c){ if (c) all.push(c); });
+    }
+
+    return all;
+  }
+
   function showTagError(msg){
     tagError.style.display = "block";
     tagError.textContent = msg;
   }
 
-  async function analyzeDecklist(){
-    var entries = parseDecklist(decklistInput.value);
-
+  function resetTagUI(){
     tagError.style.display = "none";
     tagResults.style.display = "none";
+    analyzeAnywaysBtn.style.display = "none";
+  }
+
+  async function handleAnalyzeClick(forceAnyway){
+    var parsed = parseDecklist(decklistInput.value);
+    var entries = parsed.entries;
+    var sideboardExcluded = parsed.sideboardExcluded;
+
+    resetTagUI();
 
     if (entries.length === 0){
       showTagError('Paste a decklist first, one card per line (e.g. "1 Birds of Paradise").');
       deckSizeNote.textContent = "";
+      sideboardNote.textContent = "";
       return;
     }
 
@@ -1027,38 +1302,69 @@
       ? "✓ 100-card deck detected."
       : "⚠ This list has " + totalCards + " card(s). The land formula and this analyzer assume a 100-card deck.";
 
-    var qtyByName = {};
-    var order = [];
-    entries.forEach(function(e){
-      var key = e.name.toLowerCase();
-      if (!(key in qtyByName)){
-        qtyByName[key] = { name: e.name, qty: 0 };
-        order.push(key);
-      }
-      qtyByName[key].qty += e.qty;
-    });
+    if (sideboardExcluded.length){
+      var sbTotal = sideboardExcluded.reduce(function(s, e){ return s + e.qty; }, 0);
+      sideboardNote.textContent = "Ignored " + sbTotal + " sideboard/maybeboard card(s): " +
+        sideboardExcluded.map(function(e){ return e.qty + "x " + e.name; }).join(", ");
+    } else {
+      sideboardNote.textContent = "";
+    }
 
+    if (totalCards < 100 && !forceAnyway){
+      analyzeAnywaysBtn.style.display = "inline-block";
+      showTagError("This list has " + totalCards + " card(s), fewer than the 100 expected. Click \"Analyze Anyways\" if you'd like to run the analysis anyway.");
+      return;
+    }
+
+    await runAnalysis(entries);
+  }
+
+  async function runAnalysis(entries){
+    var dedup = dedupeByName(entries);
+    var qtyByName = dedup.qtyByName;
+    var order = dedup.order;
     var uniqueNames = order.map(function(k){ return qtyByName[k].name; });
-    var batches = chunkArray(uniqueNames, 25);
 
     analyzeBtn.disabled = true;
+    analyzeAnywaysBtn.disabled = true;
     analyzeBtn.innerHTML = '<span class="spinner"></span>Checking Scryfall…';
     analyzeStatus.textContent = "";
 
     try {
       var matchedInfo = {};
-      for (var i = 0; i < batches.length; i++){
-        analyzeStatus.textContent = "Querying batch " + (i + 1) + " of " + batches.length + "…";
-        var cards = await fetchMatchesWithFallback(batches[i]);
-        cards.forEach(function(c){
+      var tagBatches = chunkArray(uniqueNames, 25);
+
+      var tagPromise = (async function(){
+        for (var i = 0; i < tagBatches.length; i++){
+          analyzeStatus.textContent = "Checking ramp/draw tags: batch " + (i + 1) + " of " + tagBatches.length + "…";
+          var cards = await fetchMatchesWithFallback(tagBatches[i]);
+          cards.forEach(function(c){
+            var candidates = [c.name];
+            if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
+            candidates.forEach(function(cand){
+              var key = cand.trim().toLowerCase();
+              matchedInfo[key] = { name: cand.trim(), mv: c.cmc, fullName: c.name };
+            });
+          });
+        }
+      })();
+
+      var cardDataByName = {};
+      var cardDataPromise = (async function(){
+        var allCardData = await fetchAllCardData(uniqueNames);
+        allCardData.forEach(function(c){
+          // Register an MDFC under its full name AND each individual face name, since
+          // a decklist typically lists only the front face (e.g. "Agadeem's Awakening"
+          // rather than "Agadeem's Awakening // Agadeem, the Undercrypt").
           var candidates = [c.name];
           if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
           candidates.forEach(function(cand){
-            var key = cand.trim().toLowerCase();
-            matchedInfo[key] = { name: cand.trim(), mv: c.cmc, fullName: c.name };
+            cardDataByName[cand.trim().toLowerCase()] = c;
           });
         });
-      }
+      })();
+
+      await Promise.all([tagPromise, cardDataPromise]);
 
       var totalCount = 0;
       var matchedRows = [];
@@ -1078,6 +1384,31 @@
         }
       });
 
+      // Average mana value of nonland "spells": front face of type_line decides
+      // whether a card counts as a land (MDFC lands like Zagoth Triome are
+      // excluded the same as a plain Forest). Computed both including and excluding
+      // any card flagged as the commander.
+      var spellMvTotal = 0, spellQtyTotal = 0, notFoundQty = 0, notFoundNames = [];
+      var spellMvTotalExcl = 0, spellQtyTotalExcl = 0;
+      var commanderNames = [];
+      order.forEach(function(key){
+        var entry = qtyByName[key];
+        if (entry.isCommander) commanderNames.push(entry.name);
+        var card = cardDataByName[key];
+        if (!card){ notFoundQty += entry.qty; notFoundNames.push(entry.name); return; }
+        var frontType = (card.type_line || "").split(" // ")[0];
+        if (/land/i.test(frontType)) return;
+        var contribution = (card.cmc || 0) * entry.qty;
+        spellMvTotal += contribution;
+        spellQtyTotal += entry.qty;
+        if (!entry.isCommander){
+          spellMvTotalExcl += contribution;
+          spellQtyTotalExcl += entry.qty;
+        }
+      });
+      var avgMvIncl = spellQtyTotal > 0 ? (spellMvTotal / spellQtyTotal) : null;
+      var avgMvExcl = (commanderNames.length > 0 && spellQtyTotalExcl > 0) ? (spellMvTotalExcl / spellQtyTotalExcl) : null;
+
       tagCount.textContent = totalCount;
 
       matchList.innerHTML = "";
@@ -1094,19 +1425,61 @@
       }
 
       unmatchedList.innerHTML = unmatchedNames.length
-        ? "Not counted (no ramp/draw tag under mv 4, or name not recognized by Scryfall): " +
+        ? '<strong class="unmatched-label">Not counted (no ramp/draw tag under mv 4, or name not recognized by Scryfall):</strong> ' +
           unmatchedNames.map(function(n){ return '<span class="name">' + n.replace(/</g, "&lt;") + "</span>"; }).join(", ")
         : "";
 
-      // Automatically apply the result to the Land Calculator's ramp slider.
-      var min = parseInt(rampSlider.min, 10);
-      var max = parseInt(rampSlider.max, 10);
-      var clamped = Math.max(min, Math.min(max, totalCount));
-      rampSlider.value = clamped;
+      // Apply ramp/draw count to its slider (unchanged: no ambiguity here, so this
+      // still applies automatically).
+      var rMin = parseInt(rampSlider.min, 10);
+      var rMax = parseInt(rampSlider.max, 10);
+      var rClamped = Math.max(rMin, Math.min(rMax, totalCount));
+      rampSlider.value = rClamped;
       computeLands();
-      autoNote.textContent = (clamped === totalCount)
-        ? "✓ Applied to the Land Calculator above (ramp/draw = " + clamped + ")."
-        : "✓ Applied to the Land Calculator above, clamped to " + clamped + " (slider max is " + max + "; raw count was " + totalCount + ").";
+
+      autoNote.textContent = "✓ Ramp/draw applied to the Land Calculator above (ramp/draw = " + rClamped + ")" +
+        (rClamped !== totalCount ? " (clamped from " + totalCount + ")" : "") +
+        ". Average mana value defaults to excluding the commander below; switch it anytime.";
+
+      // Show the average-MV comparison. Defaults to excluding the commander
+      // (matches Frank Karsten's methodology, which is based on the 99-card
+      // library), falling back to including it if no commander was detected.
+      // Either button can still be used to switch at any time.
+      if (avgMvIncl !== null){
+        mvInclValue.textContent = avgMvIncl.toFixed(2);
+        lastMvIncl = avgMvIncl;
+        mvSummary.style.display = "flex";
+      } else {
+        lastMvIncl = null;
+        mvSummary.style.display = "none";
+      }
+
+      if (avgMvExcl !== null){
+        mvExclValue.textContent = avgMvExcl.toFixed(2);
+        lastMvExcl = avgMvExcl;
+        mvExclRow.style.display = "flex";
+      } else {
+        lastMvExcl = null;
+        mvExclRow.style.display = "none";
+      }
+
+      if (lastMvExcl !== null){
+        applyMvToSlider(lastMvExcl);
+        setActiveMv("excl");
+      } else if (lastMvIncl !== null){
+        applyMvToSlider(lastMvIncl);
+        setActiveMv("incl");
+      } else {
+        setActiveMv(null);
+      }
+
+      commanderNote.textContent = commanderNames.length
+        ? "Commander detected: " + commanderNames.join(", ")
+        : "";
+
+      notFoundList.textContent = notFoundNames.length
+        ? "Scryfall did not recognize " + notFoundNames.length + " card(s), excluded from the mana-value average: " + notFoundNames.join(", ")
+        : "";
 
       tagResults.style.display = "block";
       analyzeStatus.textContent = "Done. Checked " + uniqueNames.length + " unique card(s).";
@@ -1114,11 +1487,14 @@
       showTagError("Couldn't reach Scryfall (" + err.message + "). Check your internet connection and try again.");
     } finally {
       analyzeBtn.disabled = false;
+      analyzeAnywaysBtn.disabled = false;
       analyzeBtn.textContent = "Analyze list";
+      analyzeAnywaysBtn.style.display = "none";
     }
   }
 
-  analyzeBtn.addEventListener("click", analyzeDecklist);
+  analyzeBtn.addEventListener("click", function(){ handleAnalyzeClick(false); });
+  analyzeAnywaysBtn.addEventListener("click", function(){ handleAnalyzeClick(true); });
 })();
 </script>
 </body>
