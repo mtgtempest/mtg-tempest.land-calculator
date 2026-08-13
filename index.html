@@ -28,6 +28,13 @@
     --radius:16px;
   }
 
+  /* The 60-card tab uses its own highlight color; the shared page title lives
+     outside this panel, so it's unaffected. */
+  #tabStd{
+    --highlight:#e8486d;
+    --highlight-soft:rgba(232,72,109,0.14);
+  }
+
   *{box-sizing:border-box;}
   html,body{
     margin:0;
@@ -64,6 +71,11 @@
     letter-spacing:-0.01em;
     margin:0 0 4px;
     color:var(--highlight);
+    transition:color 0.2s ease;
+  }
+
+  .app-header h1.title-std{
+    color:#e8486d;
   }
 
   .version-tag{
@@ -93,6 +105,39 @@
 
   .app-header .subtitle + .subtitle{
     margin-top:6px;
+  }
+
+  .format-tabs{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:22px;
+    margin-bottom:32px;
+    flex-wrap:wrap;
+  }
+
+  .format-tab-btn{
+    background:transparent;
+    color:var(--text-2);
+    border:none;
+    border-bottom:2px solid transparent;
+    padding:4px 2px 6px;
+    font-size:0.72rem;
+    font-weight:600;
+    font-family:"Montserrat",sans-serif;
+    cursor:pointer;
+    opacity:0.6;
+    transition:border-color 0.15s, color 0.15s, font-size 0.15s, opacity 0.15s;
+  }
+  .format-tab-btn:hover{
+    color:var(--text-1);
+    opacity:0.85;
+  }
+  .format-tab-btn.active{
+    color:var(--text-0);
+    border-bottom-color:var(--text-2);
+    font-size:1.05rem;
+    opacity:1;
   }
 
   .card{
@@ -721,11 +766,18 @@
 <div class="app">
 
   <div class="app-header">
-    <h1>MTG Tempest's Land Calculator</h1>
+    <h1 id="pageTitle">MTG Tempest's Land Calculator</h1>
     <div class="version-tag">v1.1.0</div>
     <p class="subtitle">Based on the math by <a href="https://www.tcgplayer.com/content/article/How-Many-Lands-Do-You-Need-in-Your-Deck-An-Updated-Analysis/cd1c1a24-d439-4a8e-b369-b936edb0b38a/" target="_blank" rel="noopener">Frank Karsten</a></p>
     <p class="subtitle">All credit to <a href="https://www.scryfall.com" target="_blank" rel="noopener">Scryfall</a> for the Tagging Service!</p>
   </div>
+
+  <div class="format-tabs">
+    <button type="button" class="format-tab-btn active" data-target="tabCmdr">Commander</button>
+    <button type="button" class="format-tab-btn" data-target="tabStd">60 Card Formats</button>
+  </div>
+
+  <div id="tabCmdr" class="format-tab-panel">
 
   <!-- LAND CALCULATOR -->
   <section class="card hero">
@@ -740,17 +792,17 @@
     </div>
 
     <div class="field">
-      <label>Cheap card draw / mana ramp spells <span class="val" id="rampVal">10</span></label>
-      <input type="range" id="rampSlider" min="0" max="99" step="1" value="10">
+      <label>Cheap card draw + mana ramp spells* <span class="val" id="rampVal">12</span></label>
+      <input type="range" id="rampSlider" min="0" max="99" step="1" value="12">
     </div>
 
     <div class="result-block">
       <div class="result-number">
-        <span id="landRecommend">38–39</span>
+        <span id="landRecommend">37–38</span>
         <small>Approximate <strong>minimum</strong><br>number of lands</small>
       </div>
       <div class="result-detail">
-        <div class="formula" id="landFormula">31.42 + 3.13 &times; 3.00 &minus; 0.28 &times; 10 = 38.01</div>
+        <div class="formula" id="landFormula">31.42 + 3.13 &times; 3.00 &minus; 0.28 &times; 12 = 37.45</div>
         <div class="guidance" id="landGuidance">Start with 42 lands. Cut one land for roughly every 3&ndash;4 cheap card draw or mana ramp spells.</div>
       </div>
     </div>
@@ -892,6 +944,162 @@
     </div>
   </section>
 
+  </div>
+
+  <div id="tabStd" class="format-tab-panel" style="display:none;">
+
+  <!-- LAND CALCULATOR (STANDARD) -->
+  <section class="card hero">
+    <div class="desc">
+      <strong style="color:var(--text-1); font-weight:600;">19.59 + 1.90 &times; average mana value &minus; 0.28 &times; (cheap card draw / mana ramp spells) + 0.27 if you have a companion</strong>.
+      Calibrated for a 60-card minimum deck. Find the average Mana Value of your SPELLS and move the slider to match. If you would like a generalized analysis of your deck's draw + ramp, then paste and analyze your deck below. If not, you may move the sliders manually.
+    </div>
+
+    <div class="field">
+      <label>Average mana value of your spells <span class="val" id="amvVal2">2.00</span></label>
+      <input type="range" id="amvSlider2" min="0" max="6" step="0.01" value="2">
+    </div>
+
+    <div class="field">
+      <label>Cheap card draw + mana ramp spells* <span class="val" id="rampVal2">8</span></label>
+      <input type="range" id="rampSlider2" min="0" max="99" step="1" value="8">
+    </div>
+
+    <div class="result-block" style="margin-top:20px;">
+      <div class="result-number">
+        <span id="landRecommend2">21–22</span>
+        <small>Approximate <strong>minimum</strong><br>number of lands</small>
+      </div>
+      <div class="result-detail">
+        <div class="formula" id="landFormula2">19.59 + 1.90 &times; 2.00 &minus; 0.28 &times; 8 = 21.15</div>
+        <div class="guidance" id="landGuidance2">Start with 26 lands. Cut one land for roughly every 3&ndash;4 cheap card draw or mana ramp spells.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECK TAG LOOKUP (STANDARD) -->
+  <section class="card">
+    <h2>Decklist</h2>
+    <div class="desc">
+      Paste a decklist in the MTGO format. This works with a 60-card minimum, 250-card maximum list (MTG Arena's limit) and will fail to check any cards with alternative names from "the Omenpaths". Any <code>SIDEBOARD:</code> or <code>MAYBEBOARD:</code> section is checked separately, up to 15 cards without a notice. It checks <code>ramp</code> and <code>draw</code> Scryfall Tagger data with mana value below 4 (which includes lands), then updates the ramp/draw and average mana value sliders above automatically after analysis. If you want to see how one specific card changes the land count, edit it in the text field above and re-analyze, or check in your deckbuilder of choice, since this tool only reports on the list as a whole. This is the only part of the app that needs internet.
+    </div>
+
+    <div class="field">
+      <textarea id="decklistInput2" spellcheck="false">4 Lightning Bolt
+4 Birds of Paradise
+1 Force of Will</textarea>
+      <div class="hint" id="deckSizeNote2"></div>
+      <div class="hint" id="sideboardNote2"></div>
+    </div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <button class="btn" id="analyzeBtn2">Analyze list</button>
+      <button type="button" class="btn-danger" id="analyzeAnywaysBtn2" style="display:none;">Analyze Anyways</button>
+      <span id="analyzeStatus2" class="hint"></span>
+    </div>
+
+    <div id="tagError2" class="error-msg" style="display:none; margin-top:18px;"></div>
+
+    <div id="tagResults2" style="display:none; margin-top:24px;">
+      <div class="result-block">
+        <div class="result-number">
+          <span id="tagCount2">0</span>
+          <small>ramp/draw spells<br>(mv &lt; 4)</small>
+        </div>
+        <div class="result-detail">
+          <div class="guidance">
+            Weighted by quantity in your list. Based on Scryfall's oracle tags <code>ramp</code> and <code>draw</code>, filtered to mana value under 4.
+          </div>
+          <div class="auto-note" id="autoNote2"></div>
+        </div>
+      </div>
+
+      <div class="companion-picker" id="companionPicker2" style="display:none;">
+        <label class="hint" for="companionSelect2">Is one of these sideboard cards your companion?</label>
+        <select id="companionSelect2">
+          <option value="">None of these</option>
+        </select>
+      </div>
+
+      <div class="chart-wrap" style="margin-top:18px;">
+        <div class="chart-title">Matched cards</div>
+        <div class="match-list" id="matchList2"></div>
+      </div>
+
+      <div class="unmatched-list" id="unmatchedList2"></div>
+      <div class="unmatched-list" id="notFoundList2"></div>
+    </div>
+  </section>
+
+  <!-- HYPERGEOMETRIC CALCULATOR (STANDARD) -->
+  <section class="card hyper">
+    <h2>Hypergeometric Calculator</h2>
+    <div class="desc">
+      Exact odds of drawing a given number of "successes" (lands, removal, whatever card type you're tracking) out of the
+      cards you've seen so far. Uses arbitrary-precision integer math, so there's no floating-point rounding error.
+    </div>
+
+    <div id="hyperError2" class="error-msg" style="display:none;"></div>
+
+    <div class="num-row">
+      <div class="num-field">
+        <label>Deck size (N)</label>
+        <input type="number" id="deckSize2" value="60" min="1" max="500">
+      </div>
+      <div class="num-field">
+        <label>Successes in deck (S)</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="number" id="categorySize2" value="26" min="0" max="500" style="flex:1;">
+          <button type="button" class="btn-mini" id="useLandsBtn2" title="Set S to the recommended lands count above">Lands</button>
+          <button type="button" class="btn-mini" id="resetSuccessesBtn2" title="Set to typical average number of ramp / draw / removal spells (8)">8</button>
+        </div>
+        <div class="hint">e.g. number of lands, ramp spells, or a card category</div>
+      </div>
+    </div>
+    <div class="num-row">
+      <div class="num-field">
+        <label>Cards seen / drawn (c)</label>
+        <input type="number" id="sampleSize2" value="7" min="0" max="500">
+        <div class="hint">opening hand + draws by the turn in question</div>
+      </div>
+      <div class="num-field">
+        <label>Target count (t)</label>
+        <input type="number" id="targetCount2" value="3" min="0" max="500">
+      </div>
+    </div>
+
+    <div class="prob-grid">
+      <div class="prob-card">
+        <div class="label">Exactly <span class="var-t">t</span></div>
+        <div class="pct" id="pExact2">&mdash;</div>
+        <div class="frac" id="pExactFrac2"></div>
+      </div>
+      <div class="prob-card">
+        <div class="label">At least <span class="var-t">t</span></div>
+        <div class="pct" id="pAtLeast2">&mdash;</div>
+        <div class="frac" id="pAtLeastFrac2"></div>
+      </div>
+      <div class="prob-card">
+        <div class="label">At most <span class="var-t">t</span></div>
+        <div class="pct" id="pAtMost2">&mdash;</div>
+        <div class="frac" id="pAtMostFrac2"></div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Full probability distribution (highlighted bar = target t)</div>
+      <div class="chart-area">
+        <div class="y-axis-label"><span>Probability</span></div>
+        <div class="chart-main">
+          <div class="chart" id="chart2"></div>
+          <div class="x-axis-label">Number of successes (t)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+
   <footer> 2026 &middot; <a href="https://linktr.ee/monarchtempest" target="_blank" rel="noopener">Linktree</a></footer>
 </div>
 
@@ -905,6 +1113,20 @@
     var pct = ((val - min) / (max - min)) * 100;
     slider.style.background = "linear-gradient(90deg, var(--text-0) " + pct + "%, var(--border) " + pct + "%)";
   }
+
+  /* ---------- Format tabs ---------- */
+  var formatTabBtns = document.querySelectorAll(".format-tab-btn");
+  var formatTabPanels = document.querySelectorAll(".format-tab-panel");
+  var pageTitle = document.getElementById("pageTitle");
+  formatTabBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      formatTabBtns.forEach(function(b){ b.classList.remove("active"); });
+      formatTabPanels.forEach(function(p){ p.style.display = "none"; });
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.target).style.display = "block";
+      pageTitle.classList.toggle("title-std", btn.dataset.target === "tabStd");
+    });
+  });
 
   /* ---------- Land Calculator ---------- */
   var amvSlider = document.getElementById("amvSlider");
@@ -942,6 +1164,48 @@
   amvSlider.addEventListener("input", computeLands);
   rampSlider.addEventListener("input", computeLands);
   computeLands();
+
+  /* ---------- Land Calculator (Standard, 60-250) ---------- */
+  var amvSlider2 = document.getElementById("amvSlider2");
+  var rampSlider2 = document.getElementById("rampSlider2");
+  var amvVal2 = document.getElementById("amvVal2");
+  var rampVal2 = document.getElementById("rampVal2");
+  var landRecommend2 = document.getElementById("landRecommend2");
+  var landFormula2 = document.getElementById("landFormula2");
+  var landGuidance2 = document.getElementById("landGuidance2");
+  var lastLandNearest2 = 0;
+  // Set only by picking a companion from the sideboard dropdown after analysis,
+  // never by hand — there's no manual override for this one.
+  var hasCompanion2 = false;
+
+  function computeLands2(){
+    var amv = parseFloat(amvSlider2.value);
+    var ramp = parseFloat(rampSlider2.value);
+    var companionBonus = hasCompanion2 ? 0.27 : 0;
+    var raw = 19.59 + 1.90 * amv - 0.28 * ramp + companionBonus;
+    var lo = Math.max(0, Math.floor(raw));
+    var hi = Math.max(0, Math.ceil(raw));
+    var nearest = Math.max(0, Math.round(raw));
+    lastLandNearest2 = nearest;
+
+    amvVal2.textContent = amv.toFixed(2);
+    rampVal2.textContent = ramp.toFixed(0);
+    styleSliderFill(amvSlider2);
+    styleSliderFill(rampSlider2);
+
+    landRecommend2.textContent = (lo === hi) ? String(lo) : (lo + "–" + hi);
+
+    landFormula2.innerHTML = "19.59 + 1.90 &times; " + amv.toFixed(2) + " &minus; 0.28 &times; " + ramp.toFixed(0) +
+      (companionBonus > 0 ? " + 0.27" : "") + " = " + raw.toFixed(2);
+
+    var cutSpells = ramp > 0 ? " You've included " + ramp.toFixed(0) + " cheap draw/ramp spell(s) in this estimate." : "";
+    var companionNote = companionBonus > 0 ? " Includes the +0.27 companion bonus." : "";
+    landGuidance2.innerHTML = "Start with 26 lands. Cut roughly one land for every 3–4 additional cheap card draw or mana ramp spells." + cutSpells + companionNote;
+  }
+
+  amvSlider2.addEventListener("input", computeLands2);
+  rampSlider2.addEventListener("input", computeLands2);
+  computeLands2();
 
   /* ---------- Hypergeometric Calculator (exact BigInt math) ---------- */
 
@@ -1052,11 +1316,11 @@
     pAtLeastFrac.textContent = "sum over " + atLeastEntries.length + " outcome(s)";
     pAtMostFrac.textContent = "sum over " + atMostEntries.length + " outcome(s)";
 
-    renderChart(dist, k);
+    renderChart(chart, dist, k);
   }
 
-  function renderChart(dist, targetK){
-    chart.innerHTML = "";
+  function renderChart(chartEl, dist, targetK){
+    chartEl.innerHTML = "";
     if (dist.length === 0) return;
     var maxP = Math.max.apply(null, dist.map(function(d){ return d.p; }));
     if (maxP <= 0) maxP = 1;
@@ -1077,7 +1341,7 @@
 
       col.appendChild(bar);
       col.appendChild(label);
-      chart.appendChild(col);
+      chartEl.appendChild(col);
     });
   }
 
@@ -1099,6 +1363,93 @@
   });
 
   computeHyper();
+
+  /* ---------- Hypergeometric Calculator (Standard, N=60 default) ---------- */
+
+  var deckSizeEl2 = document.getElementById("deckSize2");
+  var categorySizeEl2 = document.getElementById("categorySize2");
+  var sampleSizeEl2 = document.getElementById("sampleSize2");
+  var targetCountEl2 = document.getElementById("targetCount2");
+  var hyperError2 = document.getElementById("hyperError2");
+  var chart2 = document.getElementById("chart2");
+
+  var pExact2 = document.getElementById("pExact2");
+  var pAtLeast2 = document.getElementById("pAtLeast2");
+  var pAtMost2 = document.getElementById("pAtMost2");
+  var pExactFrac2 = document.getElementById("pExactFrac2");
+  var pAtLeastFrac2 = document.getElementById("pAtLeastFrac2");
+  var pAtMostFrac2 = document.getElementById("pAtMostFrac2");
+
+  function showError2(msg){
+    hyperError2.style.display = "block";
+    hyperError2.textContent = msg;
+  }
+  function clearError2(){
+    hyperError2.style.display = "none";
+    hyperError2.textContent = "";
+  }
+
+  function computeHyper2(){
+    var N = parseInt(deckSizeEl2.value, 10);
+    var K = parseInt(categorySizeEl2.value, 10);
+    var n = parseInt(sampleSizeEl2.value, 10);
+    var k = parseInt(targetCountEl2.value, 10);
+
+    if ([N, K, n, k].some(function(v){ return isNaN(v) || v < 0; })){
+      showError2("All fields must be non-negative whole numbers.");
+      return;
+    }
+    if (K > N){
+      showError2("Successes in deck (S) cannot exceed deck size (N).");
+      return;
+    }
+    if (n > N){
+      showError2("Cards seen (c) cannot exceed deck size (N).");
+      return;
+    }
+    clearError2();
+
+    var dist = hyperDistribution(N, K, n);
+
+    var exactEntry = dist.filter(function(d){ return d.k === k; })[0];
+    var exactP = exactEntry ? exactEntry.p : 0;
+    var exactFracStr = exactEntry ? simplifyFrac(exactEntry.num, exactEntry.den) : simplifyFrac(0n, 1n);
+
+    var atLeastEntries = dist.filter(function(d){ return d.k >= k; });
+    var atLeastP = atLeastEntries.reduce(function(s, d){ return s + d.p; }, 0);
+
+    var atMostEntries = dist.filter(function(d){ return d.k <= k; });
+    var atMostP = atMostEntries.reduce(function(s, d){ return s + d.p; }, 0);
+
+    pExact2.textContent = fmtPct(exactP);
+    pAtLeast2.textContent = fmtPct(atLeastP);
+    pAtMost2.textContent = fmtPct(atMostP);
+
+    pExactFrac2.textContent = exactFracStr ? ("= " + exactFracStr) : "";
+    pAtLeastFrac2.textContent = "sum over " + atLeastEntries.length + " outcome(s)";
+    pAtMostFrac2.textContent = "sum over " + atMostEntries.length + " outcome(s)";
+
+    renderChart(chart2, dist, k);
+  }
+
+  [deckSizeEl2, categorySizeEl2, sampleSizeEl2, targetCountEl2].forEach(function(el){
+    el.addEventListener("input", computeHyper2);
+  });
+
+  var useLandsBtn2 = document.getElementById("useLandsBtn2");
+  var resetSuccessesBtn2 = document.getElementById("resetSuccessesBtn2");
+
+  useLandsBtn2.addEventListener("click", function(){
+    categorySizeEl2.value = lastLandNearest2;
+    computeHyper2();
+  });
+
+  resetSuccessesBtn2.addEventListener("click", function(){
+    categorySizeEl2.value = 8;
+    computeHyper2();
+  });
+
+  computeHyper2();
 
   /* ---------- Deck Tag Cross-Reference (live Scryfall lookup) ---------- */
 
@@ -1203,12 +1554,15 @@
   });
 
   // Parses a decklist into blank-line-separated groups. A SIDEBOARD:/MAYBEBOARD:
-  // header excludes its group entirely from analysis. A COMMANDER: header flags its
-  // group as the commander (still included in totals/analysis, just tagged). If no
-  // header is given, a trailing group of 1-2 cards is assumed to be the commander
-  // (or partner commanders) — the common export style of 98-99 cards, a blank line,
-  // then the commander(s), regardless of whether they're actually printed with Partner.
-  function parseDecklist(text){
+  // header excludes its group entirely from analysis. When opts.detectCommander is
+  // true (Commander format), a COMMANDER: header flags its group as the commander
+  // (still included in totals/analysis, just tagged), and if no header is given, a
+  // trailing group of 1-2 cards is assumed to be the commander(s) — the common export
+  // style of 98-99 cards, a blank line, then the commander(s), regardless of whether
+  // they're actually printed with Partner. When opts.detectCommander is false
+  // (Standard format), no such commander logic applies at all.
+  function parseDecklist(text, opts){
+    var detectCommander = !opts || opts.detectCommander !== false;
     var lines = text.split(/\r?\n/);
     var re = /^\s*(\d+)\s*x?\s+(.+?)\s*$/i;
     var groups = [];
@@ -1228,8 +1582,8 @@
       }
 
       if (/^(sideboard|maybeboard)\s*:?\s*$/i.test(trimmed)){ currentGroup.type = "sideboard"; return; }
-      if (/^commander\s*:?\s*$/i.test(trimmed)){ currentGroup.type = "commander"; return; }
-      if (/^deck\s*:?\s*$/i.test(trimmed)) return;
+      if (detectCommander && /^commander\s*:?\s*$/i.test(trimmed)){ currentGroup.type = "commander"; return; }
+      if (/^(deck|commander)\s*:?\s*$/i.test(trimmed)) return;
 
       var m = trimmed.match(re);
       var qty, name;
@@ -1245,7 +1599,7 @@
       currentGroup.lines.push({ name: name, qty: qty });
     });
 
-    if (groups.length > 1){
+    if (detectCommander && groups.length > 1){
       var last = groups[groups.length - 1];
       if (last.type === "plain" && last.lines.length >= 1 && last.lines.length <= 2) last.type = "commander";
     }
@@ -1636,6 +1990,244 @@
 
   analyzeBtn.addEventListener("click", function(){ handleAnalyzeClick(false); });
   analyzeAnywaysBtn.addEventListener("click", function(){ handleAnalyzeClick(true); });
+
+  /* ---------- Deck Tag Cross-Reference (Standard, live Scryfall lookup) ---------- */
+
+  var decklistInput2 = document.getElementById("decklistInput2");
+  var analyzeBtn2 = document.getElementById("analyzeBtn2");
+  var analyzeStatus2 = document.getElementById("analyzeStatus2");
+  var tagError2 = document.getElementById("tagError2");
+  var tagResults2 = document.getElementById("tagResults2");
+  var tagCount2 = document.getElementById("tagCount2");
+  var matchList2 = document.getElementById("matchList2");
+  var unmatchedList2 = document.getElementById("unmatchedList2");
+  var notFoundList2 = document.getElementById("notFoundList2");
+  var autoNote2 = document.getElementById("autoNote2");
+  var deckSizeNote2 = document.getElementById("deckSizeNote2");
+  var sideboardNote2 = document.getElementById("sideboardNote2");
+  var analyzeAnywaysBtn2 = document.getElementById("analyzeAnywaysBtn2");
+  var companionPicker2 = document.getElementById("companionPicker2");
+  var companionSelect2 = document.getElementById("companionSelect2");
+
+  function showTagError2(msg){
+    tagError2.style.display = "block";
+    tagError2.textContent = msg;
+  }
+
+  function resetTagUI2(){
+    tagError2.style.display = "none";
+    tagResults2.style.display = "none";
+    analyzeAnywaysBtn2.style.display = "none";
+  }
+
+  // The +0.27 companion bonus is only ever set by picking a card from this
+  // dropdown after analysis — there's no manual toggle for it.
+  companionSelect2.addEventListener("change", function(){
+    hasCompanion2 = !!companionSelect2.value;
+    computeLands2();
+  });
+
+  async function handleAnalyzeClick2(forceAnyway){
+    var parsed = parseDecklist(decklistInput2.value, { detectCommander: false });
+    var entries = parsed.entries;
+    var sideboardExcluded = parsed.sideboardExcluded;
+
+    resetTagUI2();
+
+    if (entries.length === 0){
+      showTagError2('Paste a decklist first, one card per line (e.g. "3 Abhorrent Oculus").');
+      deckSizeNote2.textContent = "";
+      sideboardNote2.textContent = "";
+      return;
+    }
+
+    var totalCards = entries.reduce(function(sum, e){ return sum + e.qty; }, 0);
+    if (totalCards >= 60 && totalCards <= 250){
+      deckSizeNote2.textContent = "✓ " + totalCards + "-card deck detected (60–250 range).";
+    } else if (totalCards < 60){
+      deckSizeNote2.textContent = "⚠ This list has " + totalCards + " card(s), fewer than the 60-card minimum.";
+    } else {
+      deckSizeNote2.textContent = "⚠ This list has " + totalCards + " card(s), more than the 250-card maximum (MTG Arena's limit).";
+    }
+
+    var sbTotal = sideboardExcluded.reduce(function(s, e){ return s + e.qty; }, 0);
+    if (sideboardExcluded.length){
+      sideboardNote2.textContent = (sbTotal > 15 ? "⚠ " : "") + "Sideboard: " + sbTotal + " card(s) set aside from the main analysis: " +
+        sideboardExcluded.map(function(e){ return e.qty + "x " + e.name; }).join(", ") +
+        (sbTotal > 15 ? ". That's more than the standard 15-card sideboard limit." : "");
+    } else {
+      sideboardNote2.textContent = "";
+    }
+
+    if (totalCards < 60 && !forceAnyway){
+      analyzeAnywaysBtn2.style.display = "inline-block";
+      showTagError2("This list has " + totalCards + " card(s), fewer than the 60 expected. Click \"Analyze Anyways\" if you'd like to run the analysis anyway.");
+      return;
+    }
+
+    await runAnalysis2(entries, sideboardExcluded);
+  }
+
+  async function runAnalysis2(entries, sideboardExcluded){
+    var dedup = dedupeByName(entries);
+    var qtyByName = dedup.qtyByName;
+    var order = dedup.order;
+    var uniqueNames = order.map(function(k){ return qtyByName[k].name; });
+
+    analyzeBtn2.disabled = true;
+    analyzeAnywaysBtn2.disabled = true;
+    analyzeBtn2.innerHTML = '<span class="spinner"></span>Checking Scryfall…';
+    analyzeStatus2.textContent = "";
+
+    try {
+      var matchedInfo = {};
+      var tagBatches = chunkArray(uniqueNames, 25);
+
+      var tagPromise = (async function(){
+        for (var i = 0; i < tagBatches.length; i++){
+          analyzeStatus2.textContent = "Checking ramp/draw tags: batch " + (i + 1) + " of " + tagBatches.length + "…";
+          var cards = await fetchMatchesWithFallback(tagBatches[i]);
+          cards.forEach(function(c){
+            var candidates = [c.name];
+            if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
+            candidates.forEach(function(cand){
+              var key = cand.trim().toLowerCase();
+              matchedInfo[key] = { name: cand.trim(), mv: c.cmc, fullName: c.name };
+            });
+          });
+        }
+      })();
+
+      var cardDataByName = {};
+      var cardDataPromise = (async function(){
+        var allCardData = await fetchAllCardData(uniqueNames);
+        allCardData.forEach(function(c){
+          var candidates = [c.name];
+          if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
+          candidates.forEach(function(cand){
+            cardDataByName[cand.trim().toLowerCase()] = c;
+          });
+        });
+      })();
+
+      await Promise.all([tagPromise, cardDataPromise]);
+
+      var totalCount = 0;
+      var matchedRows = [];
+      var unmatchedNames = [];
+
+      order.forEach(function(key){
+        var entry = qtyByName[key];
+        if (matchedInfo[key]){
+          totalCount += entry.qty;
+          matchedRows.push({ name: entry.name, qty: entry.qty, mv: matchedInfo[key].mv });
+        } else {
+          unmatchedNames.push(entry.name);
+        }
+      });
+
+      // Average mana value of nonland "spells" in the main deck only. The
+      // companion (if any) always lives in the sideboard here, so it's never
+      // part of `entries` and never folded into this average; it only ever
+      // contributes the formula's flat +0.27 bonus via the checkbox above.
+      var spellMvTotal = 0, spellQtyTotal = 0, notFoundQty = 0, notFoundNames = [];
+      order.forEach(function(key){
+        var entry = qtyByName[key];
+        var card = cardDataByName[key];
+        if (!card){ notFoundQty += entry.qty; notFoundNames.push(entry.name); return; }
+        var frontType = (card.type_line || "").split(" // ")[0];
+        if (/land/i.test(frontType)) return;
+        spellMvTotal += (card.cmc || 0) * entry.qty;
+        spellQtyTotal += entry.qty;
+      });
+      var avgMv = spellQtyTotal > 0 ? (spellMvTotal / spellQtyTotal) : null;
+
+      tagCount2.textContent = totalCount;
+
+      matchList2.innerHTML = "";
+      if (matchedRows.length === 0){
+        matchList2.innerHTML = '<div class="hint">No cards in your list matched a ramp/draw tag under mana value 4.</div>';
+      } else {
+        matchedRows.forEach(function(r){
+          var row = document.createElement("div");
+          row.className = "match-row";
+          row.innerHTML = '<span><span class="qty">' + r.qty + '×</span>' + r.name + '</span>' +
+            '<span class="tag-badge">mv ' + formatMV(r.mv) + '</span>';
+          matchList2.appendChild(row);
+        });
+      }
+
+      unmatchedList2.innerHTML = unmatchedNames.length
+        ? '<strong class="unmatched-label">Not counted (no ramp/draw tag under mv 4, or name not recognized by Scryfall):</strong> ' +
+          unmatchedNames.map(function(n){ return '<span class="name">' + n.replace(/</g, "&lt;") + "</span>"; }).join(", ")
+        : "";
+
+      // Apply ramp/draw count to its slider.
+      var rMin = parseInt(rampSlider2.min, 10);
+      var rMax = parseInt(rampSlider2.max, 10);
+      var rClamped = Math.max(rMin, Math.min(rMax, totalCount));
+      rampSlider2.value = rClamped;
+
+      // Apply average spell mana value to its slider.
+      var mvNoteText;
+      if (avgMv !== null){
+        var aMin = parseFloat(amvSlider2.min);
+        var aMax = parseFloat(amvSlider2.max);
+        var aClamped = Math.max(aMin, Math.min(aMax, avgMv));
+        amvSlider2.value = aClamped.toFixed(2);
+        mvNoteText = "avg MV of spells = " + aClamped.toFixed(2);
+      } else {
+        mvNoteText = "avg MV of spells unavailable (no recognized nonland cards)";
+      }
+
+      // Companion picker: any sideboard card could be the companion here, since
+      // a sideboard is just a normal part of this format, not a sign of anything
+      // unusual. Always offer it whenever a sideboard is present.
+      var sideboardDedup = dedupeByName(sideboardExcluded);
+      var sideboardOrder = sideboardDedup.order;
+      var sideboardQtyByName = sideboardDedup.qtyByName;
+
+      companionSelect2.innerHTML = '<option value="">None of these</option>';
+      if (sideboardOrder.length > 0){
+        sideboardOrder.forEach(function(key){
+          var info = sideboardQtyByName[key];
+          var opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = info.qty + "x " + info.name;
+          companionSelect2.appendChild(opt);
+        });
+        companionSelect2.value = (sideboardOrder.length === 1) ? sideboardOrder[0] : "";
+        companionPicker2.style.display = "block";
+      } else {
+        companionPicker2.style.display = "none";
+        companionSelect2.value = "";
+      }
+      hasCompanion2 = !!companionSelect2.value;
+
+      computeLands2();
+
+      autoNote2.textContent = "✓ Applied to the Land Calculator above: " + mvNoteText + ", ramp/draw = " + rClamped +
+        (rClamped !== totalCount ? " (clamped from " + totalCount + ")" : "") +
+        (hasCompanion2 ? ". Companion bonus applied." : ".");
+
+      notFoundList2.textContent = notFoundNames.length
+        ? "Scryfall did not recognize " + notFoundNames.length + " card(s), excluded from the mana-value average: " + notFoundNames.join(", ")
+        : "";
+
+      tagResults2.style.display = "block";
+      analyzeStatus2.textContent = "Done. Checked " + uniqueNames.length + " unique card(s).";
+    } catch (err){
+      showTagError2("Couldn't reach Scryfall (" + err.message + "). Check your internet connection and try again.");
+    } finally {
+      analyzeBtn2.disabled = false;
+      analyzeAnywaysBtn2.disabled = false;
+      analyzeBtn2.textContent = "Analyze list";
+      analyzeAnywaysBtn2.style.display = "none";
+    }
+  }
+
+  analyzeBtn2.addEventListener("click", function(){ handleAnalyzeClick2(false); });
+  analyzeAnywaysBtn2.addEventListener("click", function(){ handleAnalyzeClick2(true); });
 })();
 </script>
 </body>
