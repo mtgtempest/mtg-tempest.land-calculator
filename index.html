@@ -910,7 +910,10 @@
       </div>
       <div class="num-field">
         <label>Target count (t)</label>
-        <input type="number" id="targetCount" value="3" min="0" max="500">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="number" id="targetCount" value="3" min="0" max="500" style="flex:1;">
+          <button type="button" class="btn-mini" id="useAmvBtn" title="Set t to the average mana value of your spells above, rounded to the nearest whole number">AMV</button>
+        </div>
       </div>
     </div>
 
@@ -1064,7 +1067,10 @@
       </div>
       <div class="num-field">
         <label>Target count (t)</label>
-        <input type="number" id="targetCount2" value="3" min="0" max="500">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="number" id="targetCount2" value="3" min="0" max="500" style="flex:1;">
+          <button type="button" class="btn-mini" id="useAmvBtn2" title="Set t to the average mana value of your spells above, rounded to the nearest whole number">AMV</button>
+        </div>
       </div>
     </div>
 
@@ -1362,6 +1368,12 @@
     computeHyper();
   });
 
+  var useAmvBtn = document.getElementById("useAmvBtn");
+  useAmvBtn.addEventListener("click", function(){
+    targetCountEl.value = Math.round(parseFloat(amvSlider.value));
+    computeHyper();
+  });
+
   computeHyper();
 
   /* ---------- Hypergeometric Calculator (Standard, N=60 default) ---------- */
@@ -1446,6 +1458,12 @@
 
   resetSuccessesBtn2.addEventListener("click", function(){
     categorySizeEl2.value = 8;
+    computeHyper2();
+  });
+
+  var useAmvBtn2 = document.getElementById("useAmvBtn2");
+  useAmvBtn2.addEventListener("click", function(){
+    targetCountEl2.value = Math.round(parseFloat(amvSlider2.value));
     computeHyper2();
   });
 
