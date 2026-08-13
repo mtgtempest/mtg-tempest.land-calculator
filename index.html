@@ -9,18 +9,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-0:#060509;
-    --bg-1:#0e0c15;
-    --bg-2:#151220;
-    --panel:rgba(16,14,24,0.78);
-    --border:rgba(255,255,255,0.09);
-    --text-0:#f4f2fa;
-    --text-1:#b7b2c8;
-    --text-2:#7c7791;
-    --pink:#c1618f;
-    --pink-soft:rgba(193,97,143,0.12);
-    --cyan:#4f9fa8;
-    --cyan-soft:rgba(79,159,168,0.12);
+    --bg-0:#0a0a0b;
+    --bg-1:#121213;
+    --bg-2:#1a1a1c;
+    --panel:#141415;
+    --border:rgba(255,255,255,0.14);
+    --text-0:#f5f5f6;
+    --text-1:#b0b0b3;
+    --text-2:#757578;
+    --accent:#ffffff;
+    --accent-soft:rgba(255,255,255,0.08);
+    --accent-2:#d6d6d9;
+    --accent-2-soft:rgba(214,214,217,0.12);
+    --danger:#e5484d;
+    --danger-soft:rgba(229,72,77,0.10);
+    --highlight:#a18cdb;
+    --highlight-soft:rgba(161,140,219,0.14);
     --radius:16px;
   }
 
@@ -29,10 +33,6 @@
     margin:0;
     padding:0;
     background-color:var(--bg-0);
-    background-image:
-      radial-gradient(circle at 15% 10%, rgba(193,97,143,0.10), transparent 45%),
-      radial-gradient(circle at 85% 90%, rgba(79,159,168,0.09), transparent 45%);
-    background-attachment:fixed;
     color:var(--text-0);
     font-family:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     font-weight:400;
@@ -42,8 +42,8 @@
   .top-line{
     height:2px;
     width:100%;
-    background:var(--pink);
-    opacity:0.6;
+    background:var(--text-1);
+    opacity:0.5;
   }
 
   .app{
@@ -63,7 +63,7 @@
     font-size:1.85rem;
     letter-spacing:-0.01em;
     margin:0 0 4px;
-    color:var(--cyan);
+    color:var(--highlight);
   }
 
   .version-tag{
@@ -81,13 +81,14 @@
   }
 
   .app-header .subtitle a{
-    color:var(--text-0);
+    color:var(--text-1);
     text-decoration:none;
-    border-bottom:1px solid var(--pink);
+    border-bottom:1px solid var(--text-2);
     transition:color 0.15s, border-color 0.15s;
   }
   .app-header .subtitle a:hover{
-    color:var(--pink);
+    color:var(--text-0);
+    border-bottom-color:var(--text-0);
   }
 
   .app-header .subtitle + .subtitle{
@@ -96,8 +97,6 @@
 
   .card{
     background:var(--panel);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
     border:1px solid var(--border);
     border-radius:var(--radius);
     padding:30px 30px;
@@ -105,7 +104,7 @@
   }
 
   .card.hero{
-    border-color:rgba(193,97,143,0.3);
+    border-color:rgba(255,255,255,0.24);
   }
 
   .card.hyper{
@@ -156,7 +155,7 @@
   }
 
   .field label .val{
-    color:var(--pink);
+    color:var(--text-0);
     font-family:"Montserrat",monospace;
     font-size:0.95rem;
     font-weight:700;
@@ -168,7 +167,7 @@
     appearance:none;
     height:4px;
     border-radius:999px;
-    background:linear-gradient(90deg,var(--pink) 0%, var(--border) 0%);
+    background:linear-gradient(90deg,var(--text-0) 0%, var(--border) 0%);
     outline:none;
     cursor:pointer;
   }
@@ -177,7 +176,7 @@
     width:16px;
     height:16px;
     border-radius:50%;
-    background:linear-gradient(135deg,var(--pink),var(--cyan));
+    background:var(--text-0);
     border:none;
     cursor:pointer;
   }
@@ -185,7 +184,7 @@
     width:14px;
     height:14px;
     border-radius:50%;
-    background:linear-gradient(135deg,var(--pink),var(--cyan));
+    background:var(--text-0);
     border:none;
     cursor:pointer;
   }
@@ -231,8 +230,8 @@
   }
   input[type="number"]:focus, textarea:focus{
     outline:none;
-    border-color:var(--cyan);
-    box-shadow:0 0 0 3px var(--cyan-soft);
+    border-color:var(--text-0);
+    box-shadow:0 0 0 3px var(--accent-soft);
   }
 
   textarea{
@@ -242,7 +241,7 @@
   }
 
   .result-block{
-    background:var(--pink-soft);
+    background:var(--highlight-soft);
     border:1px solid var(--border);
     border-radius:var(--radius);
     padding:24px 26px;
@@ -256,10 +255,7 @@
     font-family:"Montserrat",sans-serif;
     font-size:2.9rem;
     font-weight:700;
-    background:linear-gradient(120deg,var(--pink),var(--cyan));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    color:var(--highlight);
     line-height:1;
   }
 
@@ -270,7 +266,6 @@
     display:block;
     margin-top:8px;
     font-weight:500;
-    -webkit-text-fill-color:var(--text-1);
   }
 
   .result-detail{
@@ -325,7 +320,7 @@
     font-family:"Montserrat",sans-serif;
     font-size:1.7rem;
     font-weight:700;
-    color:var(--cyan);
+    color:var(--accent-2);
   }
 
   .prob-card .frac{
@@ -411,7 +406,7 @@
   }
 
   .bar.highlight{
-    background:var(--pink);
+    background:var(--highlight);
   }
 
   .bar-col .k-label{
@@ -421,7 +416,7 @@
   }
 
   .bar-col.highlight .k-label{
-    color:var(--pink);
+    color:var(--highlight);
     font-weight:700;
   }
 
@@ -430,10 +425,10 @@
   }
 
   .error-msg{
-    color:#ff6b8b;
+    color:var(--danger);
     font-size:0.85rem;
-    background:rgba(255,63,120,0.08);
-    border:1px solid rgba(255,63,120,0.3);
+    background:var(--danger-soft);
+    border:1px solid rgba(229,72,77,0.35);
     border-radius:10px;
     padding:11px 15px;
     margin-bottom:18px;
@@ -457,8 +452,8 @@
   }
 
   .btn{
-    background:linear-gradient(120deg,var(--pink),var(--cyan));
-    color:#150a10;
+    background:var(--text-0);
+    color:var(--bg-0);
     border:none;
     padding:12px 22px;
     border-radius:10px;
@@ -494,14 +489,14 @@
     transition:border-color 0.15s, color 0.15s;
   }
   .btn-mini:hover{
-    border-color:var(--pink);
+    border-color:var(--text-0);
     color:var(--text-0);
   }
 
   .btn-danger{
-    background:rgba(255,80,80,0.12);
-    color:#ff8a8a;
-    border:1px solid rgba(255,80,80,0.4);
+    background:var(--danger-soft);
+    color:var(--danger);
+    border:1px solid rgba(229,72,77,0.4);
     padding:12px 22px;
     border-radius:10px;
     font-size:0.85rem;
@@ -511,8 +506,8 @@
     transition:background 0.15s, border-color 0.15s;
   }
   .btn-danger:hover{
-    background:rgba(255,80,80,0.22);
-    border-color:rgba(255,80,80,0.65);
+    background:rgba(229,72,77,0.2);
+    border-color:rgba(229,72,77,0.65);
   }
   .btn-danger:disabled{
     opacity:0.5;
@@ -523,8 +518,8 @@
     display:inline-block;
     width:12px;
     height:12px;
-    border:2px solid rgba(10,5,16,0.35);
-    border-top-color:#0a0510;
+    border:2px solid rgba(10,10,11,0.35);
+    border-top-color:var(--bg-0);
     border-radius:50%;
     animation:spin 0.7s linear infinite;
     vertical-align:middle;
@@ -563,8 +558,8 @@
     font-size:0.66rem;
     padding:3px 10px;
     border-radius:999px;
-    background:var(--cyan-soft);
-    color:var(--cyan);
+    background:var(--accent-2-soft);
+    color:var(--accent-2);
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:0.03em;
@@ -590,7 +585,7 @@
 
   .auto-note{
     font-size:0.8rem;
-    color:var(--cyan);
+    color:var(--accent-2);
     margin-top:14px;
     font-weight:500;
   }
@@ -614,17 +609,64 @@
     transition:border-color 0.15s, background 0.15s;
   }
 
-  .mv-row.active{
-    border-color:var(--cyan);
-    background:var(--cyan-soft);
+  .mv-chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
   }
 
-  .mv-row .mv-applied-tag{
-    font-size:0.68rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.03em;
-    color:var(--cyan);
+  .mv-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--text-1);
+    font-size:0.8rem;
+    font-weight:600;
+    font-family:"Montserrat",sans-serif;
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .mv-chip:hover{
+    border-color:var(--text-0);
+    color:var(--text-0);
+  }
+  .mv-chip.included{
+    background:var(--text-0);
+    color:var(--bg-0);
+    border-color:var(--text-0);
+  }
+
+  .companion-picker{
+    margin-top:18px;
+    padding:14px 16px;
+    background:var(--accent-soft);
+    border:1px solid var(--border);
+    border-radius:9px;
+  }
+
+  .companion-picker label{
+    display:block;
+    margin-bottom:10px;
+  }
+
+  .companion-picker select{
+    width:100%;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--border);
+    color:var(--text-0);
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:0.85rem;
+    font-family:"Montserrat",sans-serif;
+  }
+  .companion-picker select:focus{
+    outline:none;
+    border-color:var(--text-0);
+    box-shadow:0 0 0 3px var(--accent-soft);
   }
 
   .mv-label{
@@ -637,8 +679,17 @@
   .mv-value{
     font-family:"Montserrat",monospace;
     font-weight:700;
-    color:var(--pink);
-    font-size:0.95rem;
+    color:var(--highlight);
+    font-size:1.7rem;
+    display:inline-block;
+  }
+
+  @keyframes mvPulse{
+    0%{ opacity:0.35; transform:scale(1.15); }
+    100%{ opacity:1; transform:scale(1); }
+  }
+  .mv-value.pulse{
+    animation:mvPulse 0.35s ease;
   }
 
   footer{
@@ -652,11 +703,12 @@
   footer a{
     color:var(--text-1);
     text-decoration:none;
-    border-bottom:1px solid var(--pink);
+    border-bottom:1px solid var(--text-2);
     transition:color 0.15s;
   }
   footer a:hover{
-    color:var(--pink);
+    color:var(--text-0);
+    border-bottom-color:var(--text-0);
   }
 
   @media (max-width:560px){
@@ -746,19 +798,20 @@
         </div>
       </div>
 
+      <div class="companion-picker" id="companionPicker" style="display:none;">
+        <label class="hint" for="companionSelect">This list totals more than 100 cards once the sideboard is included. Is one of these your companion?</label>
+        <select id="companionSelect">
+          <option value="">None of these</option>
+        </select>
+      </div>
+
       <div class="mv-summary" id="mvSummary" style="display:none;">
-        <div class="mv-row" id="mvInclRow">
-          <span class="mv-label">Avg MV of spells (including commander)</span>
-          <span class="mv-value" id="mvInclValue">&mdash;</span>
-          <span class="mv-applied-tag" id="mvInclTag" style="display:none;">Applied</span>
-          <button type="button" class="btn-mini" id="useMvInclBtn">Use this &rarr;</button>
+        <div class="mv-row">
+          <span class="mv-label">Avg MV of spells</span>
+          <span class="mv-value" id="mvValue">&mdash;</span>
+          <button type="button" class="btn-mini" id="useMvBtn">Use this &rarr;</button>
         </div>
-        <div class="mv-row" id="mvExclRow" style="display:none;">
-          <span class="mv-label">Avg MV of spells (excluding commander)</span>
-          <span class="mv-value" id="mvExclValue">&mdash;</span>
-          <span class="mv-applied-tag" id="mvExclTag" style="display:none;">Applied</span>
-          <button type="button" class="btn-mini" id="useMvExclBtn">Use this &rarr;</button>
-        </div>
+        <div class="mv-chip-row" id="mvChipRow"></div>
         <div class="hint" id="commanderNote"></div>
       </div>
 
@@ -792,7 +845,7 @@
         <div style="display:flex; gap:8px; align-items:center;">
           <input type="number" id="categorySize" value="42" min="0" max="500" style="flex:1;">
           <button type="button" class="btn-mini" id="useLandsBtn" title="Set S to the recommended lands count above">Lands</button>
-          <button type="button" class="btn-mini" id="resetSuccessesBtn" title="Reset S to 12">12</button>
+          <button type="button" class="btn-mini" id="resetSuccessesBtn" title="Set to typical average number of ramp / draw / removal spells (12)">12</button>
         </div>
         <div class="hint">e.g. number of lands, ramp spells, or a card category</div>
       </div>
@@ -850,7 +903,7 @@
   function styleSliderFill(slider){
     var min = parseFloat(slider.min), max = parseFloat(slider.max), val = parseFloat(slider.value);
     var pct = ((val - min) / (max - min)) * 100;
-    slider.style.background = "linear-gradient(90deg, var(--pink), var(--cyan) " + pct + "%, var(--border) " + pct + "%)";
+    slider.style.background = "linear-gradient(90deg, var(--text-0) " + pct + "%, var(--border) " + pct + "%)";
   }
 
   /* ---------- Land Calculator ---------- */
@@ -1063,17 +1116,24 @@
   var sideboardNote = document.getElementById("sideboardNote");
   var analyzeAnywaysBtn = document.getElementById("analyzeAnywaysBtn");
   var mvSummary = document.getElementById("mvSummary");
-  var mvInclRow = document.getElementById("mvInclRow");
-  var mvInclValue = document.getElementById("mvInclValue");
-  var mvInclTag = document.getElementById("mvInclTag");
-  var mvExclRow = document.getElementById("mvExclRow");
-  var mvExclValue = document.getElementById("mvExclValue");
-  var mvExclTag = document.getElementById("mvExclTag");
+  var mvValue = document.getElementById("mvValue");
   var commanderNote = document.getElementById("commanderNote");
-  var useMvInclBtn = document.getElementById("useMvInclBtn");
-  var useMvExclBtn = document.getElementById("useMvExclBtn");
-  var lastMvIncl = null;
-  var lastMvExcl = null;
+  var useMvBtn = document.getElementById("useMvBtn");
+  var mvChipRow = document.getElementById("mvChipRow");
+  var companionPicker = document.getElementById("companionPicker");
+  var companionSelect = document.getElementById("companionSelect");
+
+  // Bucketed mana-value contributions from the last analysis: "rest" is every
+  // recognized nonland spell that isn't a commander or the companion. Each
+  // commander gets its own bucket/chip (so partner pairs toggle independently);
+  // the companion (if any) gets one too. Recomputed live from the chip states
+  // without needing to re-hit Scryfall.
+  var mvRest = { mv: 0, qty: 0 };
+  var commanderBuckets = []; // [{ key, name, mv, qty, included }]
+  var companionBucket = null; // { key, name, mv, qty, included } or null
+  var sideboardCardDataByName = {};
+  var sideboardCandidatesByKey = {};
+  var lastMvComputed = null;
 
   function applyMvToSlider(mv){
     if (mv === null) return;
@@ -1083,29 +1143,71 @@
     computeLands();
   }
 
-  // Highlights whichever of the two figures is currently applied to the slider,
-  // so switching back and forth has a clear "you are here" indicator.
-  function setActiveMv(which){
-    mvInclRow.classList.toggle("active", which === "incl");
-    mvInclTag.style.display = which === "incl" ? "inline" : "none";
-    mvExclRow.classList.toggle("active", which === "excl");
-    mvExclTag.style.display = which === "excl" ? "inline" : "none";
+  function pulseMvValue(){
+    mvValue.classList.remove("pulse");
+    void mvValue.offsetWidth; // force reflow so the animation restarts
+    mvValue.classList.add("pulse");
   }
 
-  useMvInclBtn.addEventListener("click", function(){
-    applyMvToSlider(lastMvIncl);
-    setActiveMv("incl");
-  });
-  useMvExclBtn.addEventListener("click", function(){
-    applyMvToSlider(lastMvExcl);
-    setActiveMv("excl");
+  function recomputeMvDisplay(){
+    var mv = mvRest.mv, qty = mvRest.qty;
+    commanderBuckets.forEach(function(b){ if (b.included){ mv += b.mv; qty += b.qty; } });
+    if (companionBucket && companionBucket.included){ mv += companionBucket.mv; qty += companionBucket.qty; }
+    lastMvComputed = qty > 0 ? (mv / qty) : null;
+    mvValue.textContent = lastMvComputed !== null ? lastMvComputed.toFixed(2) : "—";
+  }
+
+  function makeMvChip(bucket, kindLabel){
+    var chip = document.createElement("button");
+    chip.type = "button";
+    function render(){
+      chip.className = "mv-chip" + (bucket.included ? " included" : "");
+      chip.textContent = (bucket.included ? "✓ " : "+ ") + kindLabel + ": " + bucket.name;
+    }
+    render();
+    chip.addEventListener("click", function(){
+      bucket.included = !bucket.included;
+      render();
+      pulseMvValue();
+      recomputeMvDisplay();
+    });
+    return chip;
+  }
+
+  function renderMvChips(){
+    mvChipRow.innerHTML = "";
+    commanderBuckets.forEach(function(b){
+      mvChipRow.appendChild(makeMvChip(b, "Commander"));
+    });
+    if (companionBucket){
+      mvChipRow.appendChild(makeMvChip(companionBucket, "Companion"));
+    }
+  }
+
+  useMvBtn.addEventListener("click", function(){ applyMvToSlider(lastMvComputed); });
+
+  companionSelect.addEventListener("change", function(){
+    var key = companionSelect.value;
+    if (!key){
+      companionBucket = null;
+    } else {
+      var info = sideboardCandidatesByKey[key];
+      var card = sideboardCardDataByName[key];
+      var isLand = card && /land/i.test((card.type_line || "").split(" // ")[0]);
+      var mv = (card && !isLand) ? (card.cmc || 0) * info.qty : 0;
+      var qty = (card && !isLand) ? info.qty : 0;
+      companionBucket = { key: key, name: info.name, mv: mv, qty: qty, included: false };
+    }
+    renderMvChips();
+    recomputeMvDisplay();
   });
 
   // Parses a decklist into blank-line-separated groups. A SIDEBOARD:/MAYBEBOARD:
   // header excludes its group entirely from analysis. A COMMANDER: header flags its
   // group as the commander (still included in totals/analysis, just tagged). If no
-  // header is given, a lone trailing group containing exactly one card is assumed to
-  // be the commander (common export style: 99 cards, blank line, then the commander).
+  // header is given, a trailing group of 1-2 cards is assumed to be the commander
+  // (or partner commanders) — the common export style of 98-99 cards, a blank line,
+  // then the commander(s), regardless of whether they're actually printed with Partner.
   function parseDecklist(text){
     var lines = text.split(/\r?\n/);
     var re = /^\s*(\d+)\s*x?\s+(.+?)\s*$/i;
@@ -1145,7 +1247,7 @@
 
     if (groups.length > 1){
       var last = groups[groups.length - 1];
-      if (last.type === "plain" && last.lines.length === 1) last.type = "commander";
+      if (last.type === "plain" && last.lines.length >= 1 && last.lines.length <= 2) last.type = "commander";
     }
 
     var entries = [];
@@ -1316,10 +1418,10 @@
       return;
     }
 
-    await runAnalysis(entries);
+    await runAnalysis(entries, sideboardExcluded);
   }
 
-  async function runAnalysis(entries){
+  async function runAnalysis(entries, sideboardExcluded){
     var dedup = dedupeByName(entries);
     var qtyByName = dedup.qtyByName;
     var order = dedup.order;
@@ -1364,7 +1466,29 @@
         });
       })();
 
-      await Promise.all([tagPromise, cardDataPromise]);
+      // A companion sits in the sideboard, so it's never part of `entries` — look
+      // its mana value up separately in case the user identifies one below.
+      var sideboardDedup = dedupeByName(sideboardExcluded);
+      var sideboardOrder = sideboardDedup.order;
+      var sideboardQtyByName = sideboardDedup.qtyByName;
+      var sideboardUniqueNames = sideboardOrder.map(function(k){ return sideboardQtyByName[k].name; });
+
+      sideboardCardDataByName = {};
+      sideboardCandidatesByKey = {};
+      sideboardOrder.forEach(function(k){ sideboardCandidatesByKey[k] = sideboardQtyByName[k]; });
+
+      var sideboardCardDataPromise = sideboardUniqueNames.length ? (async function(){
+        var allSbData = await fetchAllCardData(sideboardUniqueNames);
+        allSbData.forEach(function(c){
+          var candidates = [c.name];
+          if (c.name.indexOf(" // ") !== -1) candidates = candidates.concat(c.name.split(" // "));
+          candidates.forEach(function(cand){
+            sideboardCardDataByName[cand.trim().toLowerCase()] = c;
+          });
+        });
+      })() : Promise.resolve();
+
+      await Promise.all([tagPromise, cardDataPromise, sideboardCardDataPromise]);
 
       var totalCount = 0;
       var matchedRows = [];
@@ -1386,28 +1510,36 @@
 
       // Average mana value of nonland "spells": front face of type_line decides
       // whether a card counts as a land (MDFC lands like Zagoth Triome are
-      // excluded the same as a plain Forest). Computed both including and excluding
-      // any card flagged as the commander.
-      var spellMvTotal = 0, spellQtyTotal = 0, notFoundQty = 0, notFoundNames = [];
-      var spellMvTotalExcl = 0, spellQtyTotalExcl = 0;
+      // excluded the same as a plain Forest). Each commander (partner pairs get
+      // two) becomes its own bucket/chip; the companion bucket is filled in
+      // separately below once the sideboard picker resolves.
+      var notFoundQty = 0, notFoundNames = [];
       var commanderNames = [];
+      mvRest = { mv: 0, qty: 0 };
+      commanderBuckets = [];
       order.forEach(function(key){
         var entry = qtyByName[key];
         if (entry.isCommander) commanderNames.push(entry.name);
         var card = cardDataByName[key];
-        if (!card){ notFoundQty += entry.qty; notFoundNames.push(entry.name); return; }
+        if (!card){
+          notFoundQty += entry.qty;
+          notFoundNames.push(entry.name);
+          if (entry.isCommander) commanderBuckets.push({ key: key, name: entry.name, mv: 0, qty: 0, included: false });
+          return;
+        }
         var frontType = (card.type_line || "").split(" // ")[0];
-        if (/land/i.test(frontType)) return;
+        if (/land/i.test(frontType)){
+          if (entry.isCommander) commanderBuckets.push({ key: key, name: entry.name, mv: 0, qty: 0, included: false });
+          return;
+        }
         var contribution = (card.cmc || 0) * entry.qty;
-        spellMvTotal += contribution;
-        spellQtyTotal += entry.qty;
-        if (!entry.isCommander){
-          spellMvTotalExcl += contribution;
-          spellQtyTotalExcl += entry.qty;
+        if (entry.isCommander){
+          commanderBuckets.push({ key: key, name: entry.name, mv: contribution, qty: entry.qty, included: false });
+        } else {
+          mvRest.mv += contribution;
+          mvRest.qty += entry.qty;
         }
       });
-      var avgMvIncl = spellQtyTotal > 0 ? (spellMvTotal / spellQtyTotal) : null;
-      var avgMvExcl = (commanderNames.length > 0 && spellQtyTotalExcl > 0) ? (spellMvTotalExcl / spellQtyTotalExcl) : null;
 
       tagCount.textContent = totalCount;
 
@@ -1439,39 +1571,48 @@
 
       autoNote.textContent = "✓ Ramp/draw applied to the Land Calculator above (ramp/draw = " + rClamped + ")" +
         (rClamped !== totalCount ? " (clamped from " + totalCount + ")" : "") +
-        ". Average mana value defaults to excluding the commander below; switch it anytime.";
+        ". Average mana value defaults to excluding the commander/companion below; switch it anytime.";
 
-      // Show the average-MV comparison. Defaults to excluding the commander
-      // (matches Frank Karsten's methodology, which is based on the 99-card
-      // library), falling back to including it if no commander was detected.
-      // Either button can still be used to switch at any time.
-      if (avgMvIncl !== null){
-        mvInclValue.textContent = avgMvIncl.toFixed(2);
-        lastMvIncl = avgMvIncl;
-        mvSummary.style.display = "flex";
+      // Commander chips default to excluded (unchecked), matching Frank Karsten's
+      // 99-card-library methodology. Partner commanders each get their own chip.
+      commanderBuckets.forEach(function(b){ b.included = false; });
+
+      // Companion picker: only offered when the sideboard pushes the grand total
+      // (main + sideboard) over 100, since that's the tell-tale sign of a companion
+      // sitting outside the 99-card library.
+      var mainTotal = entries.reduce(function(s, e){ return s + e.qty; }, 0);
+      var sbTotalQty = sideboardExcluded.reduce(function(s, e){ return s + e.qty; }, 0);
+      var grandTotal = mainTotal + sbTotalQty;
+
+      companionSelect.innerHTML = '<option value="">None of these</option>';
+      if (grandTotal > 100 && sideboardOrder.length > 0){
+        sideboardOrder.forEach(function(key){
+          var info = sideboardQtyByName[key];
+          var opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = info.qty + "x " + info.name;
+          companionSelect.appendChild(opt);
+        });
+        // Convenience default when there's exactly one candidate; still just a
+        // pre-selection the user can change back to "None of these".
+        companionSelect.value = (sideboardOrder.length === 1) ? sideboardOrder[0] : "";
+        companionPicker.style.display = "block";
       } else {
-        lastMvIncl = null;
-        mvSummary.style.display = "none";
+        companionPicker.style.display = "none";
+        companionSelect.value = "";
       }
 
-      if (avgMvExcl !== null){
-        mvExclValue.textContent = avgMvExcl.toFixed(2);
-        lastMvExcl = avgMvExcl;
-        mvExclRow.style.display = "flex";
+      companionBucket = null;
+      if (companionSelect.value){
+        companionSelect.dispatchEvent(new Event("change")); // builds companionBucket + renders chips
       } else {
-        lastMvExcl = null;
-        mvExclRow.style.display = "none";
+        renderMvChips();
       }
 
-      if (lastMvExcl !== null){
-        applyMvToSlider(lastMvExcl);
-        setActiveMv("excl");
-      } else if (lastMvIncl !== null){
-        applyMvToSlider(lastMvIncl);
-        setActiveMv("incl");
-      } else {
-        setActiveMv(null);
-      }
+      var anyCommanderQty = commanderBuckets.some(function(b){ return b.qty > 0; });
+      mvSummary.style.display = (mvRest.qty > 0 || anyCommanderQty) ? "flex" : "none";
+      recomputeMvDisplay();
+      applyMvToSlider(lastMvComputed);
 
       commanderNote.textContent = commanderNames.length
         ? "Commander detected: " + commanderNames.join(", ")
